@@ -20,13 +20,6 @@ export function tryGet(obj, key, defaultValue) {
   return defaultValue;
 }
 
-export function checkFields(obj, paths) {
-  if (typeof (paths) === 'string') {
-    return _.get(obj, paths) && true;
-  }
-  return paths.reduce((currentCheck, path) => _.get(obj, path) && currentCheck, true);
-}
-
 export function fieldsNotEmpty(obj, ...paths) {
   if (typeof (paths) === 'string') {
     return _.get(obj, paths) && true;
