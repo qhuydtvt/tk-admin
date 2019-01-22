@@ -1,5 +1,5 @@
 import React from 'react';
-import purple from '@material-ui/core/colors/purple';
+import blue from '@material-ui/core/colors/blue';
 import green from '@material-ui/core/colors/green';
 import './App.css';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
@@ -14,7 +14,7 @@ const theme = createMuiTheme({
     useNextVariants: true,
   },
   palette: {
-    primary: purple,
+    primary: blue,
     secondary: green,
   },
   status: {
