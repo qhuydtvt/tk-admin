@@ -51,26 +51,30 @@ const styles = theme => ({
 });
 
 class ResponsiveDrawer extends React.Component {
-  state = {
-    mobileOpen: false,
-    currentPanelIndex: 0,
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      mobileOpen: false,
+    };
+    this.handleDrawerToggle = this.handleDrawerToggle.bind(this);
+  }
 
-  handleDrawerToggle = () => {
+  handleDrawerToggle() {
     this.setState(state => ({ mobileOpen: !state.mobileOpen }));
-  };
+  }
 
   render() {
+    const { mobileOpen } = this.state;
     const { classes, theme } = this.props;
-    const { panels } = this.props;
+    const { panels, container } = this.props;
 
     const drawer = (
       <div>
         <div className={classes.toolbar} />
         <Divider />
         <List>
-          {panels.map((panel, index) => (
-            <Link to={panel.link} key={index} style={{textDecoration: "none"}}>
+          {panels.map(panel => (
+            <Link to={panel.link} key={panel.title} style={{ textDecoration: 'none' }}>
               <ListItem button>
                 <ListItemIcon>{panel.icon}</ListItemIcon>
                 <ListItemText primary={panel.title} />
@@ -87,23 +91,23 @@ class ResponsiveDrawer extends React.Component {
         <AppBar position="fixed" className={classes.appBar}>
           <Toolbar>
             <IconButton
-                color="inherit"
-                aria-label="Open drawer"
-                onClick={this.handleDrawerToggle}
-                className={classes.menuButton}
-              >
-                <MenuIcon />
-              </IconButton>
+              color="inherit"
+              aria-label="Open drawer"
+              onClick={this.handleDrawerToggle}
+              className={classes.menuButton}
+            >
+              <MenuIcon />
+            </IconButton>
           </Toolbar>
         </AppBar>
         <nav className={classes.drawer}>
           {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
           <Hidden smUp implementation="css">
             <Drawer
-              container={this.props.container}
+              container={container}
               variant="temporary"
               anchor={theme.direction === 'rtl' ? 'right' : 'left'}
-              open={this.state.mobileOpen}
+              open={mobileOpen}
               onClose={this.handleDrawerToggle}
               classes={{
                 paper: classes.drawerPaper,
@@ -127,7 +131,7 @@ class ResponsiveDrawer extends React.Component {
         <main className={classes.content}>
           <div className={classes.toolbar} />
           <Switch>
-            {panels.map((p, index) => <Route path={p.link} component={p.view} key={index} />)}
+            {panels.map(p => <Route path={p.link} component={p.view} key={p.title} />)}
           </Switch>
         </main>
       </div>
@@ -136,11 +140,10 @@ class ResponsiveDrawer extends React.Component {
 }
 
 ResponsiveDrawer.propTypes = {
-  classes: PropTypes.object.isRequired,
-  // Injected by the documentation to work in an iframe.
-  // You won't need it on your project.
-  container: PropTypes.object,
-  theme: PropTypes.object.isRequired,
+  classes: PropTypes.shape({}).isRequired,
+  container: PropTypes.shape({}).isRequired,
+  theme: PropTypes.shape({}).isRequired,
+  panels: PropTypes.shape([]).isRequired,
 };
 
 export default withStyles(styles, { withTheme: true })(ResponsiveDrawer);
