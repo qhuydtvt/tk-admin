@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import './App.css';
-import AppBar from './AppBar';
 import Drawer from './Drawer';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import {Add, Class} from '@material-ui/icons';
