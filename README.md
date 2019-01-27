@@ -11,10 +11,12 @@ import {TKTable, TKDataTable, createDataProvider} from 'tk-admin';
     {
       field: 'personalInfo.firstName',
       name: 'First name',
+      sortable: true,
     },
     {
       field: 'personalInfo.lastName',
       name: 'Last name',
+      sortable: true,
     },
     {
       field: 'personalInfo.email',
