@@ -36,7 +36,3 @@ import {TKTable, TKDataTable, createDataProvider} from 'tk-admin';
 />
 
 ```
-## Dependencies
-- @material-ui/core
-- axios
-- prop-types
