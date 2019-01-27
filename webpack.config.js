@@ -10,8 +10,9 @@ module.exports = {
     extensions: ['.js', '.jsx']
   },
   performance: {
+    hints: false,
     maxEntrypointSize: 500000,
-    maxAssetSize: 500000,
+    maxAssetSize: 800000,
   },
   module: {
     rules: [

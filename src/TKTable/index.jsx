@@ -9,15 +9,7 @@ import Paper from '@material-ui/core/Paper';
 import TablePagination from '@material-ui/core/TablePagination';
 import _ from 'lodash';
 
-function headerName(h) {
-  if (typeof (h) === 'string') {
-    return h;
-  }
-  if (typeof (h) === 'object') {
-    return h.name;
-  }
-  return h;
-}
+import HeadCell from './headCell';
 
 function headerField(h) {
   if (typeof (h) === 'string') {
@@ -46,9 +38,10 @@ const TKTable = (props) => {
           <TableRow>
             {
               headers.map((h, index) => (
-                <TableCell key={`header-${index.toString()}`}>
-                  {headerName(h)}
-                </TableCell>
+                <HeadCell
+                  key={`header-${index.toString()}`}
+                  value={h}
+                />
               ))
             }
           </TableRow>
