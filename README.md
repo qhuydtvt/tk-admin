@@ -1,5 +1,5 @@
 # Component for displaying common admin UI
-## `tk-table = material-ui + axios`
+## `tk-admin = material-ui + axios + formik`
 ## Usage
 ```
 import {TKTable, TKDataTable, createDataProvider} from 'tk-admin';

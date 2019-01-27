@@ -18,7 +18,7 @@ module.exports = {
       {
         test: /\.js$/,
         include: path.resolve(__dirname, 'src'),
-        exclude: /(node_modules|bower_components|build)/,
+        exclude: /(node_modules|samples|bower_components|build)/,
         use: {
           loader: 'babel-loader',
           options: {
@@ -29,7 +29,7 @@ module.exports = {
       {
         test: /\.jsx$/,
         include: path.resolve(__dirname, 'src'),
-        exclude: /(node_modules|bower_components|build)/,
+        exclude: /(node_modules|samples|bower_components|build)/,
         use: {
           loader: 'babel-loader',
           options: {
@@ -40,7 +40,7 @@ module.exports = {
       {
         test: /\.svg$/,
         include: path.resolve(__dirname, 'src'),
-        exclude: /(node_modules|bower_components|build)/,
+        exclude: /(node_modules|samples|bower_components|build)/,
         use: {
           loader: 'svg-react-loader',
           options: {
