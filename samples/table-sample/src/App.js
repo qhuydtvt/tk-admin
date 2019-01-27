@@ -6,6 +6,7 @@ export default () => (
     <TKDataTable
       renderTable={props => <TKTable {...props} />}
       provideData={createDataProvider('https://tk-cm-dummy.herokuapp.com/api/v1/customers')}
+      title="Customers"
       headers={[
         {
           field: 'personalInfo.firstName',
@@ -15,6 +16,7 @@ export default () => (
         {
           field: 'personalInfo.lastName',
           name: 'Last name',
+          sortable: true,
         },
         {
           field: 'personalInfo.email',
@@ -35,4 +37,4 @@ export default () => (
       ]}
      />
   </div>
-)
+);
