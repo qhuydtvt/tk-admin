@@ -13,64 +13,55 @@ export default class TKDataTable extends Component {
       isLoading: false,
       sortField: '',
       sortOrder: '',
+      search: '',
     };
     this.handlePageChange = this.handlePageChange.bind(this);
     this.handleChangeRowsPerPage = this.handleChangeRowsPerPage.bind(this);
     this.handleSort = this.handleSort.bind(this);
+    this.handleSearch = this.handleSearch.bind(this);
+    this.fetch = this.fetch.bind(this);
   }
 
-  async componentDidMount() {
+  componentDidMount() {
+    this.fetch();
+  }
+
+  handlePageChange(event, page) {
+    this.setState({ page }, this.fetch);
+  }
+
+  handleSort(sortField, sortOrder) {
+    this.setState({ sortField, sortOrder }, this.fetch);
+  }
+
+  handleChangeRowsPerPage(event) {
+    this.setState({ rowsPerPage: event.target.value, page: 0 }, this.fetch);
+  }
+
+  handleSearch(search) {
+    this.setState({ search }, this.fetch);
+  }
+
+  async fetch() {
+    const {
+      page,
+      rowsPerPage,
+      sortField,
+      sortOrder,
+      search,
+    } = this.state;
     const { provideData } = this.props;
-    const { page, rowsPerPage } = this.state;
     this.setState({ isLoading: true });
-    const dataPage = await provideData(page, rowsPerPage);
-    this.setState({
-      count: dataPage.count,
-      data: dataPage.data,
-      isLoading: false,
-    });
-  }
-
-  async handlePageChange(event, newPage) {
-    const { provideData } = this.props;
-    const { rowsPerPage, sortField, sortOrder } = this.state;
-    this.setState({ isLoading: true });
-    const dataPage = await provideData(newPage, rowsPerPage, sortField, sortOrder);
-    this.setState({
-      count: dataPage.count,
-      data: dataPage.data,
-      page: newPage,
-      isLoading: false,
-    });
-  }
-
-  async handleSort(field, order) {
-    const { provideData } = this.props;
-    const { page, rowsPerPage } = this.state;
-    this.setState({
-      sortField: field,
-      sortOrder: order,
-      isLoading: true,
-    });
-    const dataPage = await provideData(page, rowsPerPage, field, order);
-    this.setState({
-      data: dataPage.data,
-      isLoading: false,
-    });
-  }
-
-  async handleChangeRowsPerPage(event) {
-    const { provideData } = this.props;
-    const { sortField, sortOrder } = this.state;
-    this.setState({ isLoading: true });
-    const dataPage = await provideData(0, event.target.value, sortField, sortOrder);
-    this.setState({
-      count: dataPage.count,
-      data: dataPage.data,
-      page: 0,
-      rowsPerPage: event.target.value,
-      isLoading: false,
-    });
+    try {
+      const dataPage = await provideData(page, rowsPerPage, sortField, sortOrder, search);
+      this.setState({
+        isLoading: false,
+        data: dataPage.data,
+        count: dataPage.count,
+      });
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   render() {
@@ -101,6 +92,7 @@ export default class TKDataTable extends Component {
             sortField,
             sortOrder,
             sort: this.handleSort,
+            search: this.handleSearch,
             ...this.props,
           })
         }

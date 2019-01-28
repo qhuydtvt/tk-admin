@@ -2,29 +2,30 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {
   Toolbar as MuiToolbar,
-  Typography,
   CircularProgress,
 } from '@material-ui/core';
 
+import SearchBar from './searchBar';
+
 const TitleAndActions = (props) => {
-  const { title } = props;
+  const style = {
+    display: 'flex',
+    flexFlow: 'column',
+  };
   return (
-    <div>
-      <Typography variant="h6">
-        {title}
-      </Typography>
+    <div style={style}>
+      <SearchBar {...props} />
     </div>
   );
-};
-
-TitleAndActions.propTypes = {
-  title: PropTypes.string.isRequired,
 };
 
 const Progress = (props) => {
   const { isLoading } = props;
   const style = {
     visibility: isLoading ? 'visible' : 'hidden',
+    display: 'flex',
+    flexFlow: 'column',
+    justifyContent: 'center',
   };
   return (
     <div style={style}>

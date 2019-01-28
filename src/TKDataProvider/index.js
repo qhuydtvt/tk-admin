@@ -2,7 +2,7 @@ import axios from 'axios';
 
 axios.defaults.withCredentials = true;
 
-export default resourceUrl => (async (page, rowPerPage, sort, order) => {
+export default resourceUrl => (async (page, rowPerPage, sort, order, search) => {
   const start = page * rowPerPage;
   const end = start + rowPerPage - 1;
   const response = await axios.get(resourceUrl, {
@@ -11,6 +11,7 @@ export default resourceUrl => (async (page, rowPerPage, sort, order) => {
       _end: end,
       _sort: sort,
       _order: order,
+      q: search,
     },
   });
   return {
