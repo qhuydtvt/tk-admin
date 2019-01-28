@@ -1,6 +1,9 @@
 # Component for displaying common admin UI
 ## `tk-admin = material-ui + axios + formik`
 ## Usage
+
+### TKTable
+
 ```
 import {TKTable, TKDataTable, createDataProvider} from 'tk-admin';
 
@@ -36,5 +39,25 @@ import {TKTable, TKDataTable, createDataProvider} from 'tk-admin';
     },
   ]}
 />
+```
 
+### TKDrawer and TKAppbar
+
+```
+<TKDrawer
+  style={styles}
+  panels={panels}
+  renderAppbar={() => (
+    <TKAppbar
+      title="Teach"
+      menuItems={[
+        {
+          title: 'Logout',
+          icon: <PowerSettingsNew />,
+          onClick: () => console.log('Logout'),
+        },
+      ]}
+    />
+  )}
+/>
 ```

@@ -127,7 +127,10 @@ class TKAppBar extends Component {
               >
                 {
                   menuItems.map(item => (
-                    <MenuItem onClick={item.onClick}>
+                    <MenuItem
+                      onClick={item.onClick}
+                      key={item.title}
+                    >
                       {item.icon}
                       &ensp;
                       {item.title}

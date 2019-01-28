@@ -17,8 +17,6 @@ import { MuiThemeProvider, withStyles } from '@material-ui/core/styles';
 import {
   Switch, Route, Link, BrowserRouter as Router,
 } from 'react-router-dom';
-import TKAppbar from '../TKAppbar';
-// eslint-disable-next-line import/no-named-as-default
 
 const drawerWidth = 240;
 
