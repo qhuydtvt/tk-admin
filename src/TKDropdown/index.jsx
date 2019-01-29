@@ -12,19 +12,21 @@ const TKDropdown = (props) => {
     menuItems,
     onChange,
     value,
-    id,
     title,
     name,
+    style,
   } = props;
   return (
-    <FormControl>
-      <InputLabel htmlFor={id}>{title}</InputLabel>
+    <FormControl
+      style={style}
+    >
+      <InputLabel htmlFor={`tk-dd-${name}`}>{title}</InputLabel>
       <Select
         value={value}
         onChange={onChange}
         inputProps={{
           name,
-          id,
+          id: `tk-dd-${name}`,
         }}
       >
         <MenuItem value="">
@@ -47,6 +49,7 @@ TKDropdown.defaultProps = {
   menuItems: [],
   onChange: null,
   value: '',
+  style: {},
 };
 
 TKDropdown.propTypes = {
@@ -66,9 +69,9 @@ TKDropdown.propTypes = {
     PropTypes.number,
     PropTypes.shape({}),
   ]),
-  id: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
+  style: PropTypes.shape({}),
 };
 
 export default TKDropdown;
