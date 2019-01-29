@@ -83,7 +83,8 @@ const TKTable = (props) => {
         onChangePage={onChangePage}
         onChangeRowsPerPage={onChangeRowsPerPage}
       />
-    </Paper>);
+    </Paper>
+  );
 };
 
 TKTable.defaultProps = {
