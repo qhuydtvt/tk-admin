@@ -2,42 +2,59 @@
 ## `tk-admin = material-ui + axios + formik`
 ## Usage
 
-### TKTable
+### TKDataTable
 
 ```
-import {TKTable, TKDataTable, createDataProvider} from 'tk-admin';
+import {TKTable, TKDataTable, createDataProvider, createProvideDataPage} from 'tk-admin';
+
+const provideCustomerDataPage = createProvideDataPage('https://tk-cm-dummy.herokuapp.com/api/v1/customers');
 
 <TKDataTable
-  renderTable={props => <TKTable {...props} />}
-  provideData={createDataProvider('https://tk-cm-dummy.herokuapp.com/api/v1/customers')}
   headers={[
     {
-      field: 'personalInfo.firstName',
-      name: 'First name',
+      title: 'First name',
+      dataField: 'personalInfo.firstName',
       sortable: true,
     },
     {
-      field: 'personalInfo.lastName',
-      name: 'Last name',
+      title: 'Last name',
+      dataField: 'personalInfo.lastName',
       sortable: true,
     },
     {
-      field: 'personalInfo.email',
-      name: 'Email',
+      title: 'Email',
+      dataField: 'personalInfo.email',
     },
     {
-      field: 'personalInfo.phoneNumber',
-      name: 'Phone',
+      title: 'Phone',
+      dataField: 'personalInfo.phoneNumber',
     },
     {
-      field: 'personalInfo.socialMedia',
-      name: 'Social media',
-    },
-    {
-      field: 'regInfoList.length',
-      name: 'Registration',
-    },
+      title: 'Registrations',
+      dataField: 'regInfoList[0].courseRef'
+    }
   ]}
+  provide={provideCustomerDataPage}
+  renderTable={props => <TKTable {...props} />}
+/>
+```
+
+### Searchbar and filters
+
+```
+<TKDataTable
+  ...
+  renderToolbar={props => (
+    <TKTableToolbar
+      filterConfigs={[{
+        filterField: 'course',
+        provide: provideResourceOptions,
+        render: props => <TKDataDropdown title="Course" {...props} />,
+      }]}
+      {...props}
+    />
+  ) }
+  ...
 />
 ```
 

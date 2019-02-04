@@ -14,16 +14,21 @@ export default class TKDataTable extends Component {
       sortField: '',
       sortOrder: '',
       search: '',
+      filters: {},
     };
     this.handlePageChange = this.handlePageChange.bind(this);
     this.handleChangeRowsPerPage = this.handleChangeRowsPerPage.bind(this);
     this.handleSort = this.handleSort.bind(this);
     this.handleSearch = this.handleSearch.bind(this);
+    this.handleFilterChange = this.handleFilterChange.bind(this);
     this.fetch = this.fetch.bind(this);
   }
 
   componentDidMount() {
-    this.fetch();
+    const { headers } = this.props;
+    if (headers) {
+      this.fetch();
+    }
   }
 
   handlePageChange(event, page) {
@@ -42,6 +47,10 @@ export default class TKDataTable extends Component {
     this.setState({ search }, this.fetch);
   }
 
+  handleFilterChange(name, value) {
+    this.setState({ filters: { [name]: value } }, this.fetch);
+  }
+
   async fetch() {
     const {
       page,
@@ -49,11 +58,12 @@ export default class TKDataTable extends Component {
       sortField,
       sortOrder,
       search,
+      filters,
     } = this.state;
-    const { provideData } = this.props;
+    const { provide } = this.props;
     this.setState({ isLoading: true });
     try {
-      const dataPage = await provideData(page, rowsPerPage, sortField, sortOrder, search);
+      const dataPage = await provide(page, rowsPerPage, sortField, sortOrder, search, filters);
       this.setState({
         isLoading: false,
         data: dataPage.data,
@@ -65,7 +75,7 @@ export default class TKDataTable extends Component {
   }
 
   render() {
-    const { renderTable, headers } = this.props;
+    const { renderTable, renderToolbar, ...restProps } = this.props;
     const {
       data,
       count,
@@ -75,12 +85,20 @@ export default class TKDataTable extends Component {
       isLoading,
       sortField,
       sortOrder,
+      filters,
     } = this.state;
     return (
       <div>
-        {
-          renderTable({
-            headers,
+        { renderToolbar
+          && renderToolbar({
+            filters,
+            onFilterChange: this.handleFilterChange,
+            isLoading,
+            onSearch: this.handleSearch,
+          })
+        }
+        { renderTable
+          ? renderTable({
             data,
             count,
             rowsPerPage,
@@ -88,23 +106,27 @@ export default class TKDataTable extends Component {
             page,
             onChangePage: this.handlePageChange,
             onChangeRowsPerPage: this.handleChangeRowsPerPage,
-            isLoading,
             sortField,
             sortOrder,
-            sort: this.handleSort,
-            search: this.handleSearch,
-            ...this.props,
+            onSort: this.handleSort,
+            ...restProps,
           })
+          : <span>&quot;renderTable&quot; must be provided</span>
         }
       </div>
     );
   }
 }
 
+TKDataTable.defaultProps = {
+  renderToolbar: null,
+};
+
 TKDataTable.propTypes = {
   renderTable: PropTypes.func.isRequired,
+  renderToolbar: PropTypes.func,
   headers: PropTypes.arrayOf(PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.shape({})])).isRequired,
-  provideData: PropTypes.func.isRequired,
+  provide: PropTypes.func.isRequired,
 };

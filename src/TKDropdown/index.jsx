@@ -15,6 +15,7 @@ const TKDropdown = (props) => {
     title,
     name,
     style,
+    emptyItemTitle,
   } = props;
   return (
     <FormControl
@@ -30,9 +31,8 @@ const TKDropdown = (props) => {
         }}
       >
         <MenuItem value="">
-          <em>None</em>
+          <em>{emptyItemTitle}</em>
         </MenuItem>
-
         {
           menuItems.map(item => (
             <MenuItem value={item.value} key={item.value}>
@@ -49,13 +49,16 @@ TKDropdown.defaultProps = {
   menuItems: [],
   onChange: null,
   value: '',
-  style: {},
+  style: { marginTop: '0px', marginRight: '8px' },
+  emptyItemTitle: '',
+  name: '"name" prop should be provided',
+  title: '"title" prop should be provided',
 };
 
 TKDropdown.propTypes = {
   menuItems: PropTypes.shape([
     PropTypes.shape({
-      value: PropTypes.oneOf([
+      value: PropTypes.oneOfType([
         PropTypes.string,
         PropTypes.number,
         PropTypes.shape({}),
@@ -69,8 +72,9 @@ TKDropdown.propTypes = {
     PropTypes.number,
     PropTypes.shape({}),
   ]),
-  title: PropTypes.string.isRequired,
-  name: PropTypes.string.isRequired,
+  emptyItemTitle: PropTypes.string,
+  title: PropTypes.string,
+  name: PropTypes.string,
   style: PropTypes.shape({}),
 };
 

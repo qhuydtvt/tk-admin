@@ -3,20 +3,22 @@ import _ from 'lodash';
 import PropTypes from 'prop-types';
 import { LinearProgress } from '@material-ui/core';
 
+import TKDropdown from '../TKDropdown';
+
 class TKDataDropDown extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      data: null,
+      items: null,
       isLoading: true,
     };
   }
 
   async componentDidMount() {
-    const { fetch } = this.props;
+    const { provide } = this.props;
     try {
-      const data = await fetch();
-      this.setState({ data, isLoading: true });
+      const data = await provide();
+      this.setState({ items: data, isLoading: false });
     } catch (err) {
       console.error(err);
     }
@@ -25,20 +27,22 @@ class TKDataDropDown extends Component {
   render() {
     const {
       renderDropdown,
-      config: { titleField, valueField },
+      provide,
+      value,
       ...restProps
     } = this.props;
-    const { data, isLoading } = this.state;
+    const { items, isLoading } = this.state;
     if (isLoading) {
       const { style } = restProps;
       return <LinearProgress style={style} color="primary" />;
     }
     return (
       renderDropdown({
-        menuItems: data.map(choice => ({
-          title: _.get(choice, titleField),
-          value: _.get(choice, valueField),
+        menuItems: items.map(choice => ({
+          title: _.get(choice, 'title'),
+          value: _.get(choice, 'value'),
         })),
+        value,
         ...restProps,
       })
     );
@@ -46,19 +50,21 @@ class TKDataDropDown extends Component {
 }
 
 TKDataDropDown.defaultProps = {
-  config: {
-    titleField: 'title',
-    valueField: 'value',
-  },
+  style: { width: '120px' },
+  renderDropdown: props => <TKDropdown {...props} />,
+  provide: () => [],
+  value: '',
 };
 
 TKDataDropDown.propTypes = {
-  renderDropdown: PropTypes.func.isRequired,
-  config: PropTypes.shape({
-    titleField: PropTypes.string.isRequired,
-    valueField: PropTypes.string.isRequired,
-  }),
-  fetch: PropTypes.func.isRequired,
+  style: PropTypes.shape({}),
+  renderDropdown: PropTypes.func,
+  provide: PropTypes.func,
+  value: PropTypes.oneOf([
+    PropTypes.string,
+    PropTypes.number,
+    PropTypes.shape({}),
+  ]),
 };
 
 export default TKDataDropDown;

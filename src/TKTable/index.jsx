@@ -5,54 +5,54 @@ import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
 import TablePagination from '@material-ui/core/TablePagination';
 import _ from 'lodash';
 
 import HeadCell from './headCell';
-import Toolbar from './toolbar';
 
 function headerField(h) {
   if (typeof (h) === 'string') {
     return h;
   }
   if (typeof (h) === 'object') {
-    return h.field;
+    return h.dataField;
   }
   return h;
 }
 
 const TKTable = (props) => {
   const {
-    headers, data,
+    headers,
+    data,
     rowsPerPage,
     count,
     rowsPerPageOptions,
     page,
     onChangePage,
     onChangeRowsPerPage,
+    onSort,
   } = props;
   return (
-    <Paper>
-      <Toolbar {...props} />
+    <div>
       <Table>
         <TableHead>
           <TableRow>
-            {
-              headers.map((h, index) => (
+            { headers
+              ? headers.map((h, index) => (
                 <HeadCell
                   key={`header-${index.toString()}`}
                   value={h}
+                  onSort={onSort}
                   {...props}
                 />
               ))
+              : (<span>TKTable: &quot;headers&quot; must be provided</span>)
             }
           </TableRow>
         </TableHead>
-
         <TableBody>
-          {
-            data.map((item, index) => (
+          { data
+            ? data.map((item, index) => (
               <TableRow key={index.toString()}>
                 {
                   headers.map((h, i) => (
@@ -65,6 +65,7 @@ const TKTable = (props) => {
                 }
               </TableRow>
             ))
+            : (<span>TKTable &quot;data&quot; must be provided</span>)
           }
         </TableBody>
       </Table>
@@ -83,7 +84,7 @@ const TKTable = (props) => {
         onChangePage={onChangePage}
         onChangeRowsPerPage={onChangeRowsPerPage}
       />
-    </Paper>
+    </div>
   );
 };
 
@@ -94,7 +95,10 @@ TKTable.defaultProps = {
 TKTable.propTypes = {
   headers: PropTypes.arrayOf(PropTypes.oneOfType([
     PropTypes.string,
-    PropTypes.shape({})])).isRequired,
+    PropTypes.shape({
+      title: PropTypes.string.isRequired,
+      dataField: PropTypes.string.isRequired,
+    })])).isRequired,
   data: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   rowsPerPageOptions: PropTypes.arrayOf(PropTypes.number),
   count: PropTypes.number.isRequired,
@@ -102,6 +106,7 @@ TKTable.propTypes = {
   page: PropTypes.number.isRequired,
   onChangePage: PropTypes.func.isRequired,
   onChangeRowsPerPage: PropTypes.func.isRequired,
+  onSort: PropTypes.func.isRequired,
 };
 
 export default TKTable;

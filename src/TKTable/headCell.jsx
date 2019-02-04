@@ -13,55 +13,86 @@ const SimpleHeadCell = (props) => {
       {value}
     </TableCell>
   );
-}
+};
+
+SimpleHeadCell.propTypes = {
+  value: PropTypes.oneOfType(PropTypes.string, PropTypes.number).isRequired,
+};
 
 const ObjectHeadCell = (props) => {
-  const { value: { name, sortable } } = props;
+  const { value: { title, sortable } } = props;
   if (!sortable) {
     return (
       <TableCell>
-        { name }
-      </TableCell>
-    )
-  } else {
-    return (
-      <TableCell>
-        <SortableHeadCellContent {...props} />
+        { title }
       </TableCell>
     );
   }
-}
+  return (
+    <TableCell>
+      <SortableHeadCellContent {...props} />
+    </TableCell>
+  );
+};
+
+ObjectHeadCell.propTypes = {
+  value: PropTypes.shape({
+    title: PropTypes.string.isRequired,
+    sortable: PropTypes.bool.isRequired,
+  }).isRequired,
+};
 
 const SortableHeadCellContent = (props) => {
-  const { value: { name, field }, sortField, sortOrder, sort } = props;
-  const reverseOrder = (order) => (order === 'asc' ? 'desc' : 'asc');
+  const {
+    value: { title, field },
+    sortField,
+    sortOrder,
+    onSort,
+  } = props;
+  const reverseOrder = order => (order === 'asc' ? 'desc' : 'asc');
   const active = field === sortField;
   return (
     <TableSortLabel
       active={active}
-      hideSortIcon={true}
-      onClick={() => sort(field, !active ? 'desc' : reverseOrder(sortOrder))}
+      hideSortIcon
+      onClick={() => onSort(field, !active ? 'desc' : reverseOrder(sortOrder))}
       direction={sortOrder}
     >
-      {name}
+      {title}
     </TableSortLabel>
   );
-}
+};
+
+SortableHeadCellContent.defaultProps = {
+  sortField: '',
+  sortOrder: 'desc',
+  onSort: null,
+};
+
+SortableHeadCellContent.propTypes = {
+  value: PropTypes.shape({
+    title: PropTypes.string.isRequired,
+    field: PropTypes.string.isRequired,
+  }).isRequired,
+  sortField: PropTypes.string,
+  sortOrder: PropTypes.oneOf(['desc', 'asc']),
+  onSort: PropTypes.func,
+};
 
 const HeadCell = (props) => {
   const { value } = props;
   if (typeof (value) === 'string') {
-    return <SimpleHeadCell {...props} />
+    return <SimpleHeadCell {...props} />;
   }
 
-  if (typeof(value) === 'object') {
-    return <ObjectHeadCell {...props} />
+  if ((typeof value) === 'object') {
+    return <ObjectHeadCell {...props} />;
   }
 
   return (
     <Typography color="secondary">
       &quot;header&quot; type:
-      {typeof(value)}
+      {typeof value}
       is not supported
     </Typography>
   );
@@ -71,13 +102,13 @@ HeadCell.propTypes = {
   value: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.shape({
-      name: PropTypes.string.isRequired,
+      title: PropTypes.string.isRequired,
       sortable: PropTypes.bool.isRequired,
-    })
+    }),
   ]).isRequired,
   sortField: PropTypes.string.isRequired,
   sortOrder: PropTypes.string.isRequired,
-  sort: PropTypes.func.isRequired,
+  onSort: PropTypes.func.isRequired,
 };
 
 export default HeadCell;

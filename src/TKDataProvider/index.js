@@ -1,8 +1,9 @@
 import axios from 'axios';
+import _ from 'lodash';
 
 axios.defaults.withCredentials = true;
 
-export default resourceUrl => (async (page, rowPerPage, sort, order, search) => {
+export default resourceUrl => (async (page, rowPerPage, sort, order, search, filters = {}) => {
   const start = page * rowPerPage;
   const end = start + rowPerPage - 1;
   const response = await axios.get(resourceUrl, {
@@ -12,6 +13,7 @@ export default resourceUrl => (async (page, rowPerPage, sort, order, search) => 
       _sort: sort,
       _order: order,
       q: search,
+      ...filters,
     },
   });
   return {
@@ -19,3 +21,19 @@ export default resourceUrl => (async (page, rowPerPage, sort, order, search) => 
     count: parseInt(response.headers['x-total-count'], 10),
   };
 });
+
+export const createProvideInputOptions = (resourceUrl, titleField, valueField, dataField = '') => (
+  async () => {
+    const response = await axios.get(resourceUrl);
+    let items = null;
+    if (dataField) {
+      items = _.get(response.data, dataField);
+    } else {
+      items = response.data;
+    }
+    return items.map(item => ({
+      title: _.get(item, titleField),
+      value: _.get(item, valueField),
+    }));
+  }
+);
