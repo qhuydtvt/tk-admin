@@ -12,12 +12,13 @@ const Actions = (props) => {
     filters,
     filterConfigs,
     onSearch,
+    searchEnabled,
     ...restProps
   } = props;
   return (
     <div style={style}>
       {
-        onSearch
+        searchEnabled
         && <SearchBar onSearch={onSearch} {...restProps} />
       }
       {
@@ -43,6 +44,7 @@ Actions.defaultProps = {
   onSearch: null,
   filters: {},
   filterConfigs: [],
+  searchEnabled: true,
 };
 
 Actions.propTypes = {
@@ -54,6 +56,7 @@ Actions.propTypes = {
     provide: PropTypes.func,
     render: PropTypes.func.isRequired,
   }]),
+  searchEnabled: PropTypes.bool,
 };
 
 export default Actions;

@@ -42,36 +42,48 @@ const Toolbar = (props) => {
     onFilterChange,
     filters,
     filterConfigs,
+    searchEnabled,
+    loadingEnabled,
     ...restProps
   } = props;
   return (
     <MuiToolbar>
       <div style={toolBarStyle}>
         <Actions
+          searchEnabled={searchEnabled}
           onSearch={onSearch}
           onFilterChange={onFilterChange}
           filters={filters}
           filterConfigs={filterConfigs}
           {...restProps}
         />
-        <Progress
-          isLoading={isLoading}
-          {...restProps}
-        />
+        {
+          loadingEnabled
+          && (
+          <Progress
+            isLoading={isLoading}
+            {...restProps}
+          />
+          )
+        }
       </div>
     </MuiToolbar>
   );
 };
 
 Toolbar.defaultProps = {
+  loadingEnabled: true,
   onSearch: null,
   onFilterChange: null,
   filters: {},
   filterConfigs: [],
+  searchEnabled: true,
 };
 
 Toolbar.propTypes = {
+  loadingEnabled: PropTypes.bool,
   isLoading: PropTypes.bool.isRequired,
+  searchEnabled: PropTypes.bool,
   onSearch: PropTypes.func,
   onFilterChange: PropTypes.func,
   filters: PropTypes.shape({}),

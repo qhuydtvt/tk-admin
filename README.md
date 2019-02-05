@@ -38,7 +38,7 @@ const provideCustomerDataPage = createProvideDataPage('https://tk-cm-dummy.herok
 />
 ```
 
-### Searchbar and filters
+### Filters
 
 ```
 <TKDataTable

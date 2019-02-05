@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
+import TKTableToolbar from '../TKTableToolbar';
 import TKTable from '../TKTable';
+import TKTablePagination from '../TKTablePagination';
 
 export default class TKDataTable extends Component {
   constructor(props) {
@@ -90,8 +92,16 @@ export default class TKDataTable extends Component {
   }
 
   render() {
-    const { renderTable, renderToolbar, ...restProps } = this.props;
     const {
+      renderTable,
+      renderToolbar,
+      paginationEnabled,
+      toolbarEnabled,
+      renderPagnition,
+      ...restProps
+    } = this.props;
+    const {
+      headers,
       data,
       count,
       rowsPerPage,
@@ -104,7 +114,7 @@ export default class TKDataTable extends Component {
     } = this.state;
     return (
       <div>
-        { renderToolbar
+        { toolbarEnabled
           && renderToolbar({
             filters,
             onFilterChange: this.handleFilterChange,
@@ -114,13 +124,9 @@ export default class TKDataTable extends Component {
         }
         { renderTable
           ? renderTable({
+            headers,
             data,
-            count,
-            rowsPerPage,
-            rowsPerPageOptions,
             page,
-            onChangePage: this.handlePageChange,
-            onChangeRowsPerPage: this.handleChangeRowsPerPage,
             onCellDataChange: this.handleCellDataChange,
             sortField,
             sortOrder,
@@ -129,18 +135,35 @@ export default class TKDataTable extends Component {
           })
           : <span>&quot;renderTable&quot; must be provided</span>
         }
+        {
+          paginationEnabled
+          && renderPagnition({
+            count,
+            rowsPerPage,
+            rowsPerPageOptions,
+            page,
+            onChangePage: this.handlePageChange,
+            onChangeRowsPerPage: this.handleChangeRowsPerPage,
+          })
+        }
       </div>
     );
   }
 }
 
 TKDataTable.defaultProps = {
-  renderToolbar: null,
+  paginationEnabled: true,
+  toolbarEnabled: true,
+  renderToolbar: props => <TKTableToolbar {...props} />,
   renderTable: props => <TKTable {...props} />,
+  renderPagnition: props => <TKTablePagination {...props} />,
 };
 
 TKDataTable.propTypes = {
   renderTable: PropTypes.func,
+  paginationEnabled: PropTypes.bool,
+  renderPagnition: PropTypes.func,
+  toolbarEnabled: PropTypes.bool,
   renderToolbar: PropTypes.func,
   headers: PropTypes.arrayOf(PropTypes.oneOfType([
     PropTypes.string,
