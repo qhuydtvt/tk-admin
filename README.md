@@ -35,7 +35,6 @@ const provideCustomerDataPage = createProvideDataPage('https://tk-cm-dummy.herok
     }
   ]}
   provide={provideCustomerDataPage}
-  renderTable={props => <TKTable {...props} />}
 />
 ```
 
