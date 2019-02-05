@@ -34,7 +34,17 @@ class TKDataDropDown extends Component {
     const { items, isLoading } = this.state;
     if (isLoading) {
       const { style } = restProps;
-      return <LinearProgress style={style} color="primary" />;
+      const containerStyle = {
+        minHeight: '1.1875em',
+        display: 'flex',
+        flexFlow: 'column',
+        justifyContent: 'center',
+      };
+      return (
+        <div style={containerStyle}>
+          <LinearProgress style={style} color="primary" />
+        </div>
+      );
     }
     return (
       renderDropdown({

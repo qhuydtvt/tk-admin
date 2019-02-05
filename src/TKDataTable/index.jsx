@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
+import TKTable from '../TKTable';
+
 export default class TKDataTable extends Component {
   constructor(props) {
     super(props);
@@ -134,10 +136,11 @@ export default class TKDataTable extends Component {
 
 TKDataTable.defaultProps = {
   renderToolbar: null,
+  renderTable: props => <TKTable {...props} />,
 };
 
 TKDataTable.propTypes = {
-  renderTable: PropTypes.func.isRequired,
+  renderTable: PropTypes.func,
   renderToolbar: PropTypes.func,
   headers: PropTypes.arrayOf(PropTypes.oneOfType([
     PropTypes.string,
