@@ -58,6 +58,24 @@ const provideCustomerDataPage = createProvideDataPage('https://tk-cm-dummy.herok
 />
 ```
 
+### Customize data cell rendering
+
+```
+<TKDataTable
+  headers={[
+    ...
+    {
+      title: 'Registrations',
+      dataField: 'regInfoList.length',
+      renderDataCell: props => (
+        <TableCell key={props.key}>
+          <Button onClick={() => props.change([], 'regInfoList')}>{props.value}</Button>
+        </TableCell>)
+    }
+    ...
+/>
+```
+
 ### TKDrawer and TKAppbar
 
 ```
