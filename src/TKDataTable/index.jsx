@@ -21,6 +21,7 @@ export default class TKDataTable extends Component {
     this.handleSort = this.handleSort.bind(this);
     this.handleSearch = this.handleSearch.bind(this);
     this.handleFilterChange = this.handleFilterChange.bind(this);
+    this.handleCellDataChange = this.handleCellDataChange.bind(this);
     this.fetch = this.fetch.bind(this);
   }
 
@@ -49,6 +50,18 @@ export default class TKDataTable extends Component {
 
   handleFilterChange(name, value) {
     this.setState({ filters: { [name]: value } }, this.fetch);
+  }
+
+  handleCellDataChange(pageToChange, row, field, newValue) {
+    const { page, data } = this.state;
+    if (page === pageToChange) {
+      const dataRow = data[row];
+      const newDataRow = { ...dataRow, [field]: newValue };
+      const newData = data.map((item, i) => (i === row ? newDataRow : item));
+      this.setState({
+        data: newData,
+      });
+    }
   }
 
   async fetch() {
@@ -106,6 +119,7 @@ export default class TKDataTable extends Component {
             page,
             onChangePage: this.handlePageChange,
             onChangeRowsPerPage: this.handleChangeRowsPerPage,
+            onCellDataChange: this.handleCellDataChange,
             sortField,
             sortOrder,
             onSort: this.handleSort,

@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import TablePagination from '@material-ui/core/TablePagination';
@@ -39,6 +38,7 @@ const TKTable = (props) => {
     onChangePage,
     onChangeRowsPerPage,
     onSort,
+    onCellDataChange,
   } = props;
   return (
     <div>
@@ -60,13 +60,16 @@ const TKTable = (props) => {
         </TableHead>
         <TableBody>
           { data
-            ? data.map((item, index) => (
-              <TableRow key={index.toString()}>
+            ? data.map((item, row) => (
+              <TableRow key={row.toString()}>
                 {
-                  headers.map((h, i) => (
-                    createRenderDataCell(h)({
-                      key: `item-${i.toString()}`,
-                      value: _.get(item, dataField(h)),
+                  headers.map((header, column) => (
+                    createRenderDataCell(header)({
+                      key: `item-${column.toString()}-${row.toString()}`,
+                      value: _.get(item, dataField(header)),
+                      change: onCellDataChange
+                        ? ((newValue, field) => onCellDataChange(page, row, field || dataField(header), newValue))
+                        : null,
                     })
                   ))
                 }
@@ -97,6 +100,7 @@ const TKTable = (props) => {
 
 TKTable.defaultProps = {
   rowsPerPageOptions: [5, 10, 25],
+  onCellDataChange: null,
 };
 
 TKTable.propTypes = {
@@ -112,6 +116,7 @@ TKTable.propTypes = {
   count: PropTypes.number.isRequired,
   rowsPerPage: PropTypes.number.isRequired,
   page: PropTypes.number.isRequired,
+  onCellDataChange: PropTypes.func,
   onChangePage: PropTypes.func.isRequired,
   onChangeRowsPerPage: PropTypes.func.isRequired,
   onSort: PropTypes.func.isRequired,
