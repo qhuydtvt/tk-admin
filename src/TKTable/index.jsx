@@ -22,7 +22,7 @@ function dataField(h) {
 
 function createRenderDataCell(header) {
   if ((typeof header) === 'object' && header.renderDataCell) {
-    return header.renderDataCell;
+    return props => header.renderDataCell(props);
   }
   return props => <TKDataCell {...props} />;
 }
@@ -63,15 +63,26 @@ const TKTable = (props) => {
             ? data.map((item, row) => (
               <TableRow key={row.toString()}>
                 {
-                  headers.map((header, column) => (
-                    createRenderDataCell(header)({
-                      key: `item-${column.toString()}-${row.toString()}`,
-                      value: _.get(item, dataField(header)),
-                      change: onCellDataChange
-                        ? ((newValue, field) => onCellDataChange(page, row, field || dataField(header), newValue))
-                        : null,
-                    })
-                  ))
+                  headers.map((header, column) => {
+                    const value = _.get(item, dataField(header));
+                    const key = `tktc-${column}-${row}`;
+                    const cellProps = onCellDataChange
+                      ? {
+                        page,
+                        key,
+                        value,
+                        change: ((newValue, field) => onCellDataChange(page,
+                          row,
+                          field || dataField(header),
+                          newValue)),
+                      }
+                      : {
+                        page,
+                        key,
+                        value,
+                      };
+                    return createRenderDataCell(header)(cellProps);
+                  })
                 }
               </TableRow>
             ))

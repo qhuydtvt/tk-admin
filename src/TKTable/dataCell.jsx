@@ -3,14 +3,21 @@ import PropTypes from 'prop-types';
 import TableCell from '@material-ui/core/TableCell';
 
 const TKDataCell = (props) => {
-  const { value, ...restProps } = props;
+  const {
+    value,
+    style,
+  } = props;
   return (
     <TableCell
-      {...restProps}
+      style={style}
     >
       { value }
     </TableCell>
   );
+};
+
+TKDataCell.defaultProps = {
+  style: {},
 };
 
 TKDataCell.propTypes = {
@@ -19,6 +26,7 @@ TKDataCell.propTypes = {
     PropTypes.number,
     PropTypes.element,
   ]).isRequired,
+  style: PropTypes.shape({}),
 };
 
 export default TKDataCell;
