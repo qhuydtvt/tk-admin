@@ -44,18 +44,18 @@ ObjectHeadCell.propTypes = {
 
 const SortableHeadCellContent = (props) => {
   const {
-    value: { title, field },
+    value: { title, dataField },
     sortField,
     sortOrder,
     onSort,
   } = props;
   const reverseOrder = order => (order === 'asc' ? 'desc' : 'asc');
-  const active = field === sortField;
+  const active = dataField === sortField;
   return (
     <TableSortLabel
       active={active}
       hideSortIcon
-      onClick={() => onSort(field, !active ? 'desc' : reverseOrder(sortOrder))}
+      onClick={() => onSort(dataField, !active ? 'desc' : reverseOrder(sortOrder))}
       direction={sortOrder}
     >
       {title}
@@ -72,7 +72,7 @@ SortableHeadCellContent.defaultProps = {
 SortableHeadCellContent.propTypes = {
   value: PropTypes.shape({
     title: PropTypes.string.isRequired,
-    field: PropTypes.string.isRequired,
+    dataField: PropTypes.string.isRequired,
   }).isRequired,
   sortField: PropTypes.string,
   sortOrder: PropTypes.oneOf(['desc', 'asc']),

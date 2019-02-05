@@ -8,9 +8,10 @@ import TableRow from '@material-ui/core/TableRow';
 import TablePagination from '@material-ui/core/TablePagination';
 import _ from 'lodash';
 
-import HeadCell from './headCell';
+import TKDataCell from './dataCell';
+import TKHeadCell from './headCell';
 
-function headerField(h) {
+function dataField(h) {
   if (typeof (h) === 'string') {
     return h;
   }
@@ -18,6 +19,13 @@ function headerField(h) {
     return h.dataField;
   }
   return h;
+}
+
+function createRenderDataCell(header) {
+  if ((typeof header) === 'object' && header.renderDataCell) {
+    return header.renderDataCell;
+  }
+  return props => <TKDataCell {...props} />;
 }
 
 const TKTable = (props) => {
@@ -39,7 +47,7 @@ const TKTable = (props) => {
           <TableRow>
             { headers
               ? headers.map((h, index) => (
-                <HeadCell
+                <TKHeadCell
                   key={`header-${index.toString()}`}
                   value={h}
                   onSort={onSort}
@@ -56,11 +64,10 @@ const TKTable = (props) => {
               <TableRow key={index.toString()}>
                 {
                   headers.map((h, i) => (
-                    <TableCell
-                      key={`item-${i.toString()}`}
-                    >
-                      {_.get(item, headerField(h))}
-                    </TableCell>
+                    createRenderDataCell(h)({
+                      key: `item-${i.toString()}`,
+                      value: _.get(item, dataField(h)),
+                    })
                   ))
                 }
               </TableRow>
@@ -98,6 +105,7 @@ TKTable.propTypes = {
     PropTypes.shape({
       title: PropTypes.string.isRequired,
       dataField: PropTypes.string.isRequired,
+      renderDataCell: PropTypes.func,
     })])).isRequired,
   data: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   rowsPerPageOptions: PropTypes.arrayOf(PropTypes.number),
