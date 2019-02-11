@@ -91,6 +91,7 @@ const provideCustomerDataPage = createProvideDataPage('https://tk-cm-dummy.herok
           onClick: () => console.log('Logout'),
         },
       ]}
+      {...props}
     />
   )}
 />
