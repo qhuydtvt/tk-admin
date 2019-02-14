@@ -41,10 +41,7 @@ const TKTable = (props) => {
     onRowSelectionChange,
     onAllRowSelectionChange,
   } = props;
-  const allSelected = data.reduce(
-    (accumulator, currentItem) => accumulator && !!currentItem.selected,
-    true,
-  );
+  const allSelected = !data.find(item => !item.selected);
   return (
     <Table>
       <TableHead>
@@ -52,12 +49,17 @@ const TKTable = (props) => {
           {
             selectable
             && (
-            <TableCell>
+            <TableCell
+              style={{
+                padding: '0px',
+              }}
+            >
               {
                 !!onAllRowSelectionChange
                 && (
                   <Checkbox
-                    value={allSelected}
+                    color="primary"
+                    checked={allSelected}
                     onChange={(event, checked) => onAllRowSelectionChange(page, checked)}
                   />
                 )
@@ -94,8 +96,13 @@ const TKTable = (props) => {
               {
                 selectable && onRowSelectionChange
                 && (
-                <TableCell>
+                <TableCell
+                  style={{
+                    padding: '0px',
+                  }}
+                >
                   <Checkbox
+                    color="primary"
                     checked={!!item.selected}
                     onChange={(event, checked) => onRowSelectionChange(page, row, checked)}
                   />

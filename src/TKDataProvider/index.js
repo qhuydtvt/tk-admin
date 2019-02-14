@@ -3,7 +3,13 @@ import _ from 'lodash';
 
 axios.defaults.withCredentials = true;
 
-export default resourceUrl => (async (page, rowPerPage, sort, order, search, filters = {}) => {
+const createProvidePage = resourceUrl => (async (
+  page,
+  rowPerPage,
+  sort,
+  order,
+  search,
+  filters = {}) => {
   const start = page * rowPerPage;
   const end = start + rowPerPage - 1;
   const response = await axios.get(resourceUrl, {
@@ -22,6 +28,11 @@ export default resourceUrl => (async (page, rowPerPage, sort, order, search, fil
   };
 });
 
+export const createDeleteOne = resourceUrl => async (_id) => {
+  const response = await axios.delete(`${resourceUrl}/${_id}`);
+  return response.data && response.data.success;
+};
+
 export const createProvideInputOptions = (resourceUrl, titleField, valueField, dataField = '') => (
   async () => {
     const response = await axios.get(resourceUrl);
@@ -37,3 +48,5 @@ export const createProvideInputOptions = (resourceUrl, titleField, valueField, d
     }));
   }
 );
+
+export default createProvidePage;

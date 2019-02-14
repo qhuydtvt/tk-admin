@@ -132,6 +132,10 @@ export default class TKDataTable extends Component {
       sortOrder,
       filters,
     } = this.state;
+    const deletable = data.reduce(
+      (accumulator, currentItem) => accumulator || currentItem.selected,
+      false,
+    );
     return (
       <div>
         { toolbarEnabled
@@ -140,6 +144,8 @@ export default class TKDataTable extends Component {
             onFilterChange: this.handleFilterChange,
             isLoading,
             onSearch: this.handleSearch,
+            data,
+            deletable,
           })
         }
         { renderTable
@@ -179,6 +185,7 @@ TKDataTable.defaultProps = {
   renderToolbar: props => <TKTableToolbar {...props} />,
   renderTable: props => <TKTable {...props} />,
   renderPagnition: props => <TKTablePagination {...props} />,
+  deleteOne: null,
 };
 
 TKDataTable.propTypes = {
@@ -191,4 +198,5 @@ TKDataTable.propTypes = {
     PropTypes.string,
     PropTypes.shape({})])).isRequired,
   provide: PropTypes.func.isRequired,
+  deleteOne: PropTypes.func,
 };

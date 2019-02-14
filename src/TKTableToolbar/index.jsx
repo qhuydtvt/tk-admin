@@ -62,6 +62,9 @@ const Toolbar = (props) => {
           && (
           <Progress
             isLoading={isLoading}
+            style={{
+              marginLeft: '16px',
+            }}
             {...restProps}
           />
           )
