@@ -1,11 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
 import _ from 'lodash';
-
+import {
+  TableCell,
+  TableRow,
+  Table,
+  TableBody,
+  TableHead,
+  Checkbox,
+} from '@material-ui/core';
+import TKDev from '../TKDev';
 import TKDataCell from './dataCell';
 import TKHeadCell from './headCell';
 
@@ -33,11 +37,34 @@ const TKTable = (props) => {
     page,
     onSort,
     onCellDataChange,
+    selectable,
+    onRowSelectionChange,
+    onAllRowSelectionChange,
   } = props;
+  const allSelected = data.reduce(
+    (accumulator, currentItem) => accumulator && !!currentItem.selected,
+    true,
+  );
   return (
     <Table>
       <TableHead>
         <TableRow>
+          {
+            selectable
+            && (
+            <TableCell>
+              {
+                !!onAllRowSelectionChange
+                && (
+                  <Checkbox
+                    value={allSelected}
+                    onChange={(event, checked) => onAllRowSelectionChange(page, checked)}
+                  />
+                )
+              }
+            </TableCell>
+            )
+          }
           { headers
             ? headers.map((h, index) => (
               <TKHeadCell
@@ -55,6 +82,26 @@ const TKTable = (props) => {
         { data
           ? data.map((item, row) => (
             <TableRow key={row.toString()}>
+              {
+                selectable && !onRowSelectionChange
+                && (
+                  <TKDev>
+                    When &quot;selectable&quot; is true,
+                    &quot;onRowSelectionChange&quot; must be provided
+                  </TKDev>
+                )
+              }
+              {
+                selectable && onRowSelectionChange
+                && (
+                <TableCell>
+                  <Checkbox
+                    checked={!!item.selected}
+                    onChange={(event, checked) => onRowSelectionChange(page, row, checked)}
+                  />
+                </TableCell>
+                )
+              }
               {
                 headers.map((header, column) => {
                   const value = _.get(item, dataField(header));
@@ -89,6 +136,7 @@ const TKTable = (props) => {
 TKTable.defaultProps = {
   onCellDataChange: null,
   page: 0,
+  selectable: true,
 };
 
 TKTable.propTypes = {
@@ -103,6 +151,9 @@ TKTable.propTypes = {
   page: PropTypes.number,
   onCellDataChange: PropTypes.func,
   onSort: PropTypes.func.isRequired,
+  selectable: PropTypes.bool,
+  onRowSelectionChange: PropTypes.func.isRequired,
+  onAllRowSelectionChange: PropTypes.func.isRequired,
 };
 
 export default TKTable;

@@ -26,6 +26,8 @@ export default class TKDataTable extends Component {
     this.handleSearch = this.handleSearch.bind(this);
     this.handleFilterChange = this.handleFilterChange.bind(this);
     this.handleCellDataChange = this.handleCellDataChange.bind(this);
+    this.handleRowSelectionChange = this.handleRowSelectionChange.bind(this);
+    this.handleAllRowSelectionChange = this.handleAllRowSelectionChange.bind(this);
     this.fetch = this.fetch.bind(this);
   }
 
@@ -54,6 +56,24 @@ export default class TKDataTable extends Component {
 
   handleFilterChange(name, value) {
     this.setState({ filters: { [name]: value } }, this.fetch);
+  }
+
+  handleRowSelectionChange(changingPage, itemIndex, selected) {
+    const { data, page } = this.state;
+    if (page === changingPage) {
+      this.setState({
+        data: data.map((item, i) => (i !== itemIndex ? item : { ...item, selected })),
+      });
+    }
+  }
+
+  handleAllRowSelectionChange(changingPage, selected) {
+    const { data, page } = this.state;
+    if (page === changingPage) {
+      this.setState({
+        data: data.map(item => ({ ...item, selected })),
+      });
+    }
   }
 
   handleCellDataChange(pageToChange, row, field, newValue) {
@@ -131,6 +151,8 @@ export default class TKDataTable extends Component {
             sortField,
             sortOrder,
             onSort: this.handleSort,
+            onRowSelectionChange: this.handleRowSelectionChange,
+            onAllRowSelectionChange: this.handleAllRowSelectionChange,
             ...restProps,
           })
           : <span>&quot;renderTable&quot; must be provided</span>
