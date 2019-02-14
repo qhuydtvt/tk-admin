@@ -1,4 +1,4 @@
-export { default as createProvideDataPage, createProvideInputOptions } from './TKDataProvider';
+export { default as createProvideDataPage, createProvideInputOptions, createDeleteOne } from './TKDataProvider';
 export { default as TKTable } from './TKTable';
 export { default as TKDataTable } from './TKDataTable';
 export { default as TKAppbar } from './TKAppbar';

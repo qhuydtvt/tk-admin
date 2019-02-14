@@ -29,6 +29,7 @@ export default class TKDataTable extends Component {
     this.handleRowSelectionChange = this.handleRowSelectionChange.bind(this);
     this.handleAllRowSelectionChange = this.handleAllRowSelectionChange.bind(this);
     this.fetch = this.fetch.bind(this);
+    this.delete = this.delete.bind(this);
   }
 
   componentDidMount() {
@@ -88,7 +89,30 @@ export default class TKDataTable extends Component {
     }
   }
 
-  async fetch() {
+  async dataTask(task) {
+    this.setState({ isLoading: true });
+    await task();
+    this.setState({ isLoading: false });
+  }
+
+  delete() {
+    const { data } = this.state;
+    const { deleteOne } = this.props;
+    this.dataTask(() => {
+      data
+        .filter(item => item.selected)
+        .forEach(async (item) => {
+          const result = await deleteOne(item);
+          if (result) {
+            this.setState({
+              data: data.filter(dataItem => dataItem !== item),
+            });
+          }
+        });
+    });
+  }
+
+  fetch() {
     const {
       page,
       rowsPerPage,
@@ -98,17 +122,17 @@ export default class TKDataTable extends Component {
       filters,
     } = this.state;
     const { provide } = this.props;
-    this.setState({ isLoading: true });
-    try {
-      const dataPage = await provide(page, rowsPerPage, sortField, sortOrder, search, filters);
-      this.setState({
-        isLoading: false,
-        data: dataPage.data,
-        count: dataPage.count,
-      });
-    } catch (err) {
-      console.log(err);
-    }
+    this.dataTask(async () => {
+      try {
+        const dataPage = await provide(page, rowsPerPage, sortField, sortOrder, search, filters);
+        this.setState({
+          data: dataPage.data,
+          count: dataPage.count,
+        });
+      } catch (err) {
+        console.log(err);
+      }
+    });
   }
 
   render() {
@@ -146,6 +170,7 @@ export default class TKDataTable extends Component {
             onSearch: this.handleSearch,
             data,
             deletable,
+            onDelete: this.delete,
           })
         }
         { renderTable

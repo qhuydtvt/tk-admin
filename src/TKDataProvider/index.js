@@ -28,9 +28,10 @@ const createProvidePage = resourceUrl => (async (
   };
 });
 
-export const createDeleteOne = resourceUrl => async (_id) => {
+export const createDeleteOne = (resourceUrl, idField = '_id') => async (item) => {
+  const _id = _.get(item, idField);
   const response = await axios.delete(`${resourceUrl}/${_id}`);
-  return response.data && response.data.success;
+  return !!response.data;
 };
 
 export const createProvideInputOptions = (resourceUrl, titleField, valueField, dataField = '') => (

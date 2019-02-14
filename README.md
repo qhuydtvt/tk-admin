@@ -8,6 +8,7 @@
 import {TKTable, TKDataTable, createDataProvider, createProvideDataPage} from 'tk-admin';
 
 const provideCustomerDataPage = createProvideDataPage('https://tk-cm-dummy.herokuapp.com/api/v1/customers');
+const deleteOne = createDeleteOne('https://tk-cm-dummy.herokuapp.com/api/v1/customers');
 
 <TKDataTable
   headers={[
@@ -35,6 +36,7 @@ const provideCustomerDataPage = createProvideDataPage('https://tk-cm-dummy.herok
     }
   ]}
   provide={provideCustomerDataPage}
+  deleteOne={deleteOne}
 />
 ```
 
