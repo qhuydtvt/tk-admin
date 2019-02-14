@@ -9,6 +9,7 @@ import Divider from '@material-ui/core/Divider';
 import Drawer from '@material-ui/core/Drawer';
 import Hidden from '@material-ui/core/Hidden';
 import List from '@material-ui/core/List';
+import Paper from '@material-ui/core/Paper';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -136,7 +137,11 @@ class ResponsiveDrawer extends React.Component {
                 && <div className={classes.toolbar} />
               }
               <Switch>
-                {panels.map(p => <Route path={p.link} component={p.view} key={p.title} />)}
+                {panels.map(p => (
+                  <Paper>
+                    <Route path={p.link} component={p.view} key={p.title} />
+                  </Paper>
+                ))}
               </Switch>
             </main>
           </div>
