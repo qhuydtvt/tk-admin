@@ -138,9 +138,11 @@ class ResponsiveDrawer extends React.Component {
               }
               <Switch>
                 {panels.map(p => (
-                  <Paper>
-                    <Route path={p.link} component={p.view} key={p.title} />
-                  </Paper>
+                  <Route
+                    path={p.link}
+                    component={props => <Paper>{p.view(props)}</Paper>}
+                    key={p.title}
+                  />
                 ))}
               </Switch>
             </main>
