@@ -5,7 +5,7 @@
 ### TKDataTable
 
 ```
-import {TKTable, TKDataTable, createDataProvider, createProvideDataPage} from 'tk-admin';
+import { TKTable, TKDataTable, createDataProvider, createProvideDataPage, createDeleteOne } from 'tk-admin';
 
 const provideCustomerDataPage = createProvideDataPage('https://tk-cm-dummy.herokuapp.com/api/v1/customers');
 const deleteOne = createDeleteOne('https://tk-cm-dummy.herokuapp.com/api/v1/customers');
