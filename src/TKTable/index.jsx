@@ -92,7 +92,7 @@ const TKTable = (props) => {
           ? data.map((item, row) => (
             <TKDataRow
               key={row.toString()}
-              onClick={handleRowClick}
+              onClick={() => handleRowClick(item)}
             >
               {
                 selectable && !onRowSelectionChange
@@ -114,6 +114,7 @@ const TKTable = (props) => {
                   <Checkbox
                     color="primary"
                     checked={!!item.selected}
+                    onClick={e => e.stopPropagation()}
                     onChange={(event, checked) => onRowSelectionChange(page, row, checked)}
                   />
                 </TableCell>
