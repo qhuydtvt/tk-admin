@@ -1,6 +1,6 @@
 {
   "name": "tk-admin",
-  "version": "1.6.3",
+  "version": "1.6.6",
   "description": "",
   "main": "build/index.js",
   "repository": {
@@ -37,6 +37,7 @@
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "babel-plugin-transform-react-jsx": "^6.24.1",
     "babel-preset-env": "^1.7.0",
+    "css-loader": "^2.1.0",
     "eslint": "^5.12.1",
     "eslint-config-airbnb": "^17.1.0",
     "eslint-plugin-import": "^2.15.0",

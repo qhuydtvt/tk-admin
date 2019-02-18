@@ -12,6 +12,7 @@ import {
 import TKDev from '../TKDev';
 import TKDataCell from './dataCell';
 import TKHeadCell from './headCell';
+import TKDataRow from './dataRow';
 
 function dataField(h) {
   if (typeof (h) === 'string') {
@@ -40,8 +41,14 @@ const TKTable = (props) => {
     selectable,
     onRowSelectionChange,
     onAllRowSelectionChange,
+    onRowClick,
   } = props;
   const allSelected = !data.find(item => !item.selected);
+  const handleRowClick = onRowClick ? (item) => {
+    if (onRowClick) {
+      onRowClick(item);
+    }
+  } : null;
   return (
     <Table>
       <TableHead>
@@ -83,7 +90,10 @@ const TKTable = (props) => {
       <TableBody>
         { data
           ? data.map((item, row) => (
-            <TableRow key={row.toString()}>
+            <TKDataRow
+              key={row.toString()}
+              onClick={handleRowClick}
+            >
               {
                 selectable && !onRowSelectionChange
                 && (
@@ -131,7 +141,7 @@ const TKTable = (props) => {
                   return createRenderDataCell(header)(cellProps);
                 })
               }
-            </TableRow>
+            </TKDataRow>
           ))
           : (<span>TKTable &quot;data&quot; must be provided</span>)
         }
@@ -144,6 +154,7 @@ TKTable.defaultProps = {
   onCellDataChange: null,
   page: 0,
   selectable: true,
+  onRowClick: null,
 };
 
 TKTable.propTypes = {
@@ -161,6 +172,7 @@ TKTable.propTypes = {
   selectable: PropTypes.bool,
   onRowSelectionChange: PropTypes.func.isRequired,
   onAllRowSelectionChange: PropTypes.func.isRequired,
+  onRowClick: PropTypes.func,
 };
 
 export default TKTable;

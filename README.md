@@ -35,6 +35,7 @@ const deleteOne = createDeleteOne('https://tk-cm-dummy.herokuapp.com/api/v1/cust
       dataField: 'regInfoList[0].courseRef'
     }
   ]}
+  onRowClick={(item) => console.log(item)}  // handle row click
   provide={provideCustomerDataPage}
   deleteOne={deleteOne}
 />
@@ -66,11 +67,15 @@ const deleteOne = createDeleteOne('https://tk-cm-dummy.herokuapp.com/api/v1/cust
   headers={[
     ...
     {
-      title: 'Registrations',
+      title: 'Registrations', 
       dataField: 'regInfoList.length',
       renderDataCell: props => (
         <TableCell key={props.key}>
-          <Button onClick={() => props.change([], 'regInfoList')}>{props.value}</Button>
+          <Button onClick={(e) => {
+              props.change([], 'regInfoList');
+              e.stopPropagation();
+            }}
+          >{props.value}</Button>
         </TableCell>)
     }
     ...

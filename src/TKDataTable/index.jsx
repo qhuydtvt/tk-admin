@@ -142,6 +142,7 @@ export default class TKDataTable extends Component {
       paginationEnabled,
       toolbarEnabled,
       renderPagnition,
+      onRowClick,
       ...restProps
     } = this.props;
     const {
@@ -184,6 +185,7 @@ export default class TKDataTable extends Component {
             onSort: this.handleSort,
             onRowSelectionChange: this.handleRowSelectionChange,
             onAllRowSelectionChange: this.handleAllRowSelectionChange,
+            onRowClick,
             ...restProps,
           })
           : <span>&quot;renderTable&quot; must be provided</span>
@@ -211,6 +213,7 @@ TKDataTable.defaultProps = {
   renderTable: props => <TKTable {...props} />,
   renderPagnition: props => <TKTablePagination {...props} />,
   deleteOne: null,
+  onRowClick: null,
 };
 
 TKDataTable.propTypes = {
@@ -224,4 +227,5 @@ TKDataTable.propTypes = {
     PropTypes.shape({})])).isRequired,
   provide: PropTypes.func.isRequired,
   deleteOne: PropTypes.func,
+  onRowClick: PropTypes.func,
 };

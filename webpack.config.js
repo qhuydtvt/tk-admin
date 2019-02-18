@@ -17,14 +17,20 @@ module.exports = {
   module: {
     rules: [
       {
+        test: /\.css$/,
+        use: {
+          loader: 'css-loader',
+        },
+      },
+      {
         test: /\.js$/,
         include: path.resolve(__dirname, 'src'),
         exclude: /(node_modules|samples|bower_components|build)/,
         use: {
           loader: 'babel-loader',
           options: {
-            presets: ['env']
-          }
+            presets: ['env'],
+          },
         },
       },
       {
@@ -34,8 +40,8 @@ module.exports = {
         use: {
           loader: 'babel-loader',
           options: {
-            presets: ['env']
-          }
+            presets: ['env'],
+          },
         },
       },
       {
@@ -45,11 +51,11 @@ module.exports = {
         use: {
           loader: 'svg-react-loader',
           options: {
-            presets: ['env']
+            presets: ['env'],
           },
         },
       },
-    ]
+    ],
   },
   externals: {
     'react': 'commonjs react' 
