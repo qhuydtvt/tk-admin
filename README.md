@@ -84,6 +84,22 @@ const deleteOne = createDeleteOne('https://tk-cm-dummy.herokuapp.com/api/v1/cust
 
 ### TKDrawer and TKAppbar
 
+const panels = [
+  {
+    icon: <Dashboard />,
+    title: 'Dashboard',
+    view: () => (<AppBoard />),
+    link: '/dashboard',
+    noPaper: true,
+  },
+  {
+    icon: <Users />,
+    title: 'Users',
+    view: () => (<Users />),
+    link: '/users',
+  },
+];
+
 ```
 <TKDrawer
   style={styles}
