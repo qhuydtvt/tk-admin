@@ -1,13 +1,14 @@
-var path = require('path');
+const path = require('path');
+
 module.exports = {
   entry: './src/index.js',
   output: {
     path: path.resolve(__dirname, 'build'),
     filename: 'index.js',
-    libraryTarget: 'commonjs2'
+    libraryTarget: 'commonjs2',
   },
   resolve: {
-    extensions: ['.js', '.jsx']
+    extensions: ['.js', '.jsx'],
   },
   performance: {
     hints: false,
@@ -16,12 +17,6 @@ module.exports = {
   },
   module: {
     rules: [
-      {
-        test: /\.css$/,
-        use: {
-          loader: 'css-loader',
-        },
-      },
       {
         test: /\.js$/,
         include: path.resolve(__dirname, 'src'),
@@ -58,6 +53,6 @@ module.exports = {
     ],
   },
   externals: {
-    'react': 'commonjs react' 
-  }
+    react: 'commonjs react',
+  },
 };
