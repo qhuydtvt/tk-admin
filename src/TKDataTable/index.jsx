@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import TKTableToolbar from '../TKTableToolbar';
 import TKTable from '../TKTable';
 import TKTablePagination from '../TKTablePagination';
+import TKSnackbar from '../TKSnackbar';
 
 export default class TKDataTable extends Component {
   constructor(props) {
@@ -19,6 +20,13 @@ export default class TKDataTable extends Component {
       sortOrder: '',
       search: '',
       filters: {},
+      deleteStatus: {
+        waitting: false,
+        confirmed: false,
+        message: 'Deleting',
+        onUndo: () => {},
+        onClose: () => {},
+      },
     };
     this.handlePageChange = this.handlePageChange.bind(this);
     this.handleChangeRowsPerPage = this.handleChangeRowsPerPage.bind(this);
@@ -30,6 +38,7 @@ export default class TKDataTable extends Component {
     this.handleAllRowSelectionChange = this.handleAllRowSelectionChange.bind(this);
     this.fetch = this.fetch.bind(this);
     this.delete = this.delete.bind(this);
+    this.performDelete = this.performDelete.bind(this);
   }
 
   componentDidMount() {
@@ -90,26 +99,42 @@ export default class TKDataTable extends Component {
   }
 
   async dataTask(task) {
-    this.setState({ isLoading: true });
-    await task();
-    this.setState({ isLoading: false });
+    this.setState({ isLoading: true }, async () => {
+      await task();
+      this.setState({ isLoading: false });
+    });
+  }
+
+  performDelete() {
+    const { deleteStatus } = this.state;
+    const { deleteOne } = this.props;
+    const { data } = this.state;
+    if (deleteStatus.waitting && deleteStatus.confirmed) {
+      this.dataTask(async () => {
+        const selectedItems = data.filter(item => item.selected);
+        await Promise.all(selectedItems.map(async (selectedItem) => {
+          if (await deleteOne(selectedItem)) {
+            const { data: currentData } = this.state;
+            this.setState({
+              data: currentData.filter(item => item !== selectedItem),
+            });
+          }
+        }));
+      });
+    }
+    this.setState({ deleteStatus: { waitting: false, confirmed: false } });
   }
 
   delete() {
-    const { data } = this.state;
-    const { deleteOne } = this.props;
-    this.dataTask(() => {
-      data
-        .filter(item => item.selected)
-        .forEach(async (item) => {
-          const result = await deleteOne(item);
-          if (result) {
-            this.setState({
-              data: data.filter(dataItem => dataItem !== item),
-            });
-          }
-        });
-    });
+    this.setState({
+      deleteStatus: {
+        waitting: true,
+        confirmed: true,
+        onUndo: () => this.setState({ deleteStatus: { confirmed: false, waitting: false } }),
+        onClose: this.performDelete,
+      },
+    },
+    () => setTimeout(this.performDelete, 5000));
   }
 
   fetch() {
@@ -142,7 +167,9 @@ export default class TKDataTable extends Component {
       paginationEnabled,
       toolbarEnabled,
       renderPagnition,
+      renderSnackbar,
       onRowClick,
+      deletingMessage,
       ...restProps
     } = this.props;
     const {
@@ -156,6 +183,7 @@ export default class TKDataTable extends Component {
       sortField,
       sortOrder,
       filters,
+      deleteStatus,
     } = this.state;
     const deletable = data.reduce(
       (accumulator, currentItem) => accumulator || currentItem.selected,
@@ -174,8 +202,8 @@ export default class TKDataTable extends Component {
             onDelete: this.delete,
           })
         }
-        { renderTable
-          ? renderTable({
+        {
+          renderTable({
             headers,
             data,
             page,
@@ -188,7 +216,6 @@ export default class TKDataTable extends Component {
             onRowClick,
             ...restProps,
           })
-          : <span>&quot;renderTable&quot; must be provided</span>
         }
         {
           paginationEnabled
@@ -199,6 +226,14 @@ export default class TKDataTable extends Component {
             page,
             onChangePage: this.handlePageChange,
             onChangeRowsPerPage: this.handleChangeRowsPerPage,
+          })
+        }
+        {
+          renderSnackbar({
+            open: deleteStatus.waitting,
+            message: deletingMessage,
+            onUndo: deleteStatus.onUndo,
+            onClose: deleteStatus.onClose,
           })
         }
       </div>
@@ -212,8 +247,10 @@ TKDataTable.defaultProps = {
   renderToolbar: props => <TKTableToolbar {...props} />,
   renderTable: props => <TKTable {...props} />,
   renderPagnition: props => <TKTablePagination {...props} />,
+  renderSnackbar: props => <TKSnackbar {...props} />,
   deleteOne: null,
   onRowClick: null,
+  deletingMessage: 'Deleting records',
 };
 
 TKDataTable.propTypes = {
@@ -222,10 +259,12 @@ TKDataTable.propTypes = {
   renderPagnition: PropTypes.func,
   toolbarEnabled: PropTypes.bool,
   renderToolbar: PropTypes.func,
+  renderSnackbar: PropTypes.func,
   headers: PropTypes.arrayOf(PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.shape({})])).isRequired,
   provide: PropTypes.func.isRequired,
   deleteOne: PropTypes.func,
+  deletingMessage: PropTypes.string,
   onRowClick: PropTypes.func,
 };

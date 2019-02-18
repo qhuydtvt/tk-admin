@@ -104,7 +104,7 @@ class ResponsiveDrawer extends React.Component {
               renderAppbar != null
               && renderAppbar({
                 expand: this.handleDrawerToggle,
-                ...this.props,
+                classes,
               })
             }
             <nav className={classes.drawer}>
