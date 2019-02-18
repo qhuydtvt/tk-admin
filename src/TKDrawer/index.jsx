@@ -51,7 +51,7 @@ const styles = theme => ({
     flexGrow: 1,
     padding: theme.spacing.unit * 3,
   },
-  panelPaper: {
+  panel: {
     paddingLeft: theme.spacing.unit,
     paddingRight: theme.spacing.unit,
   },
@@ -145,11 +145,17 @@ class ResponsiveDrawer extends React.Component {
                   <Route
                     path={p.link}
                     component={props => (
-                      <Paper
-                        className={classes.panelPaper}
-                      >
-                        {p.view(props)}
-                      </Paper>
+                      p.noPaper ? (
+                        <div className={classes.panel}>
+                          {p.view(props)}
+                        </div>
+                      ) : (
+                        <Paper
+                          className={classes.panel}
+                        >
+                          {p.view(props)}
+                        </Paper>
+                      )
                     )}
                     key={p.title}
                   />
