@@ -85,12 +85,14 @@ class ResponsiveDrawer extends React.Component {
         <Divider />
         <List>
           {panels.map(panel => (
-            <Link to={panel.link} key={panel.title} style={{ textDecoration: 'none' }}>
-              <ListItem button>
-                <ListItemIcon>{panel.icon || <FormatListBulleted /> }</ListItemIcon>
-                <ListItemText primary={panel.title} />
-              </ListItem>
-            </Link>
+            panel.isChild ? (
+              <Link to={panel.link} key={panel.title} style={{ textDecoration: 'none' }}>
+                <ListItem button>
+                  <ListItemIcon>{panel.icon || <FormatListBulleted /> }</ListItemIcon>
+                  <ListItemText primary={panel.title} />
+                </ListItem>
+              </Link>
+            ) : ('')
           ))}
         </List>
       </div>

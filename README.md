@@ -92,6 +92,14 @@ const panels = [
     link: '/dashboard',
     noPaper: true,
   },
+  <!-- Child need declare before parent -->
+  {
+    icon: <UserDetail />,
+    title: 'UserDetail,
+    view: () => (<UserDetail />),
+    link: '/users/:id, 
+    isChild,
+  },
   {
     icon: <Users />,
     title: 'Users',
@@ -104,6 +112,7 @@ const panels = [
 <TKDrawer
   style={styles}
   panels={panels}
+  basename="/homepage"
   renderAppbar={() => (
     <TKAppbar
       title="Teach"
