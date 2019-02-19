@@ -1,6 +1,6 @@
 /* eslint-disable no-shadow */
 /* eslint-disable no-unused-vars */
-import React, { Fragment } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import blue from '@material-ui/core/colors/blue';
 import green from '@material-ui/core/colors/green';
@@ -77,7 +77,6 @@ class ResponsiveDrawer extends React.Component {
       panels,
       container,
       renderAppbar,
-      basenameRouter,
     } = this.props;
     const drawer = (
       <div>
@@ -97,7 +96,7 @@ class ResponsiveDrawer extends React.Component {
     );
 
     return (
-      <Router basename={basenameRouter}>
+      <Router>
         <MuiThemeProvider theme={theme}>
           <div className={classes.root}>
             <CssBaseline />
@@ -142,47 +141,24 @@ class ResponsiveDrawer extends React.Component {
                 && <div className={classes.toolbar} />
               }
               <Switch>
-                {/* Add Child Path & BaseName - dzb */}
                 {panels.map(p => (
-                  <Fragment>
-                    {
-                      p.linkChild ? (
-                        <Route
-                          path={p.linkChild}
-                          component={props => (
-                            p.noPaper ? (
-                              <div className={classes.panel}>
-                                {p.viewChild(props)}
-                              </div>
-                            ) : (
-                              <Paper
-                                className={classes.panel}
-                              >
-                                {p.viewChild(props)}
-                              </Paper>
-                            )
-                          )}
-                        />
-                      ) : ''
-                    }
-                    <Route
-                      path={p.link}
-                      component={props => (
-                        p.noPaper ? (
-                          <div className={classes.panel}>
-                            {p.view(props)}
-                          </div>
-                        ) : (
-                          <Paper
-                            className={classes.panel}
-                          >
-                            {p.view(props)}
-                          </Paper>
-                        )
-                      )}
-                      key={p.title}
-                    />
-                  </Fragment>
+                  <Route
+                    path={p.link}
+                    component={props => (
+                      p.noPaper ? (
+                        <div className={classes.panel}>
+                          {p.view(props)}
+                        </div>
+                      ) : (
+                        <Paper
+                          className={classes.panel}
+                        >
+                          {p.view(props)}
+                        </Paper>
+                      )
+                    )}
+                    key={p.title}
+                  />
                 ))}
               </Switch>
             </main>
@@ -199,7 +175,6 @@ ResponsiveDrawer.defaultProps = {
   theme: undefined,
   panels: [],
   renderAppbar: null,
-  basenameRouter: '',
 };
 
 ResponsiveDrawer.propTypes = {
@@ -209,7 +184,6 @@ ResponsiveDrawer.propTypes = {
   renderAppbar: PropTypes.func,
   style: PropTypes.shape({}),
   theme: PropTypes.shape({}),
-  basenameRouter: PropTypes.string,
 };
 
 export default withStyles(styles, { withTheme: true })(ResponsiveDrawer);
