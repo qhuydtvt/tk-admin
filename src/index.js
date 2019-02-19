@@ -6,3 +6,4 @@ export { default as TKDrawer } from './TKDrawer';
 export { default as TKDropdown } from './TKDropdown';
 export { default as TKDataDropdown } from './TKDataDropdown';
 export { default as TKTableToolbar } from './TKTableToolbar';
+export { default as TKDrawerAvatar } from './TKDrawerAvatar';
