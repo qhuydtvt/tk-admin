@@ -77,6 +77,7 @@ class ResponsiveDrawer extends React.Component {
       panels,
       container,
       renderAppbar,
+      basename,
     } = this.props;
     const drawer = (
       <div>
@@ -96,7 +97,7 @@ class ResponsiveDrawer extends React.Component {
     );
 
     return (
-      <Router>
+      <Router basename={basename}>
         <MuiThemeProvider theme={theme}>
           <div className={classes.root}>
             <CssBaseline />
@@ -175,6 +176,7 @@ ResponsiveDrawer.defaultProps = {
   theme: undefined,
   panels: [],
   renderAppbar: null,
+  basename: '',
 };
 
 ResponsiveDrawer.propTypes = {
@@ -184,6 +186,7 @@ ResponsiveDrawer.propTypes = {
   renderAppbar: PropTypes.func,
   style: PropTypes.shape({}),
   theme: PropTypes.shape({}),
+  basename: PropTypes.string,
 };
 
 export default withStyles(styles, { withTheme: true })(ResponsiveDrawer);
