@@ -1,6 +1,6 @@
 {
   "name": "tk-admin",
-  "version": "1.6.16",
+  "version": "1.6.18",
   "description": "",
   "main": "build/index.js",
   "repository": {

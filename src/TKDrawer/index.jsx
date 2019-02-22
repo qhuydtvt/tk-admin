@@ -83,7 +83,7 @@ class ResponsiveDrawer extends React.Component {
         <div className={classes.toolbar} />
         <Divider />
         <List>
-          {panels.map(panel => (
+          {panels.filter(panel => (!panel.noMenu && panel.title)).map(panel => (
             <Link to={panel.link} key={panel.title} style={{ textDecoration: 'none' }}>
               <ListItem button>
                 <ListItemIcon>{panel.icon || <FormatListBulleted /> }</ListItemIcon>
