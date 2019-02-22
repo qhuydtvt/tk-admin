@@ -52,8 +52,7 @@ const styles = theme => ({
     padding: theme.spacing.unit * 3,
   },
   panel: {
-    paddingLeft: theme.spacing.unit,
-    paddingRight: theme.spacing.unit,
+    padding: theme.spacing.unit * 2,
   },
 });
 
