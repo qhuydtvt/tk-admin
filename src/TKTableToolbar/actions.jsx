@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button } from '@material-ui/core';
-import { Delete } from '@material-ui/icons';
+import { Delete, Add } from '@material-ui/icons';
 import PropTypes from 'prop-types';
 import SearchBar from './searchBar';
 
@@ -17,9 +17,15 @@ const Actions = (props) => {
     onSearch,
     searchEnabled,
     deleteEnabled,
+    createEnabled,
+    onCreate,
     deletable,
     ...restProps
   } = props;
+  const buttonContainerStyle = {
+    display: 'flex',
+    flexDirection: 'row',
+  };
   return (
     <div
       style={{
@@ -51,20 +57,36 @@ const Actions = (props) => {
           })))
         }
       </div>
-      <div>
-        {
-          deleteEnabled
-          && (
-          <Button
-            onClick={onDelete}
-            disabled={!deletable}
-            color="secondary"
-          >
-            <Delete color={deletable ? 'secondary' : 'disabled'} />
-            Delete
-          </Button>
-          )
-        }
+      <div style={buttonContainerStyle}>
+        <div>
+          {
+            createEnabled
+            && (
+              <Button
+                onClick={onCreate}
+                color="primary"
+              >
+                <Add color="primary" />
+                Create
+              </Button>
+            )
+          }
+        </div>
+        <div>
+          {
+            deleteEnabled
+            && (
+            <Button
+              onClick={onDelete}
+              disabled={!deletable}
+              color="secondary"
+            >
+              <Delete color={deletable ? 'secondary' : 'disabled'} />
+              Delete
+            </Button>
+            )
+          }
+        </div>
       </div>
     </div>
   );
@@ -74,6 +96,7 @@ Actions.defaultProps = {
   onFilterChange: null,
   onSearch: null,
   onDelete: null,
+  onCreate: null,
   filters: {},
   filterConfigs: [],
   searchEnabled: true,
@@ -95,6 +118,7 @@ Actions.propTypes = {
   deleteEnabled: PropTypes.bool,
   createEnabled: PropTypes.bool,
   onDelete: PropTypes.func,
+  onCreate: PropTypes.func,
   deletable: PropTypes.bool,
 };
 

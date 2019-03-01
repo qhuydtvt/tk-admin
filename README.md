@@ -53,6 +53,7 @@ const deleteOne = createDeleteOne('https://tk-cm-dummy.herokuapp.com/api/v1/cust
         provide: provideResourceOptions,
         render: props => <TKDataDropdown title="Course" {...props} />,
       }]}
+      onCreate={() => console.log('onCreate')}
       {...props}
     />
   ) }
