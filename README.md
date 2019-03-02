@@ -74,6 +74,8 @@ const deleteOne = createDeleteOne('https://tk-cm-dummy.herokuapp.com/api/v1/cust
         <TableCell key={props.key}>
           <Button onClick={(e) => {
               props.change([], 'regInfoList');
+              console.log(props.value); // current value
+              console.log(props.item); // current row
               e.stopPropagation();
             }}
           >{props.value}</Button>
