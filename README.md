@@ -129,3 +129,37 @@ const panels = [
   )}
 />
 ```
+
+### StoreState Locally
+changeState is a function to change state in store;
+
+```
+const state = [
+  { showVideo: false },
+  { showExercise: false },
+]
+
+class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {};
+  }
+
+  render() {
+    const { storeState, changeState } = this.props;
+    const { showVideo } = storeState;
+
+    return (
+      <div className="App">
+        <span>showVideo: {storeState.showVideo ? 'True' : 'False'}</span>
+        <div onClick={() => changeState({showVideo: !showVideo})}>
+          <button>Click To Change State</button>
+        </div>
+      </div>
+    );
+  }
+}
+
+export default storeState(state)(App);
+
+```
