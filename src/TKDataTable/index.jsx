@@ -170,7 +170,6 @@ export default class TKDataTable extends Component {
       renderSnackbar,
       onRowClick,
       deletingMessage,
-      onCreate,
       ...restProps
     } = this.props;
     const {
@@ -200,7 +199,6 @@ export default class TKDataTable extends Component {
             onSearch: this.handleSearch,
             data,
             deletable,
-            onCreate,
             onDelete: this.delete,
           })
         }
@@ -252,7 +250,6 @@ TKDataTable.defaultProps = {
   renderSnackbar: props => <TKSnackbar {...props} />,
   deleteOne: null,
   onRowClick: null,
-  onCreate: null,
   deletingMessage: 'Deleting records',
 };
 
@@ -270,5 +267,4 @@ TKDataTable.propTypes = {
   deleteOne: PropTypes.func,
   deletingMessage: PropTypes.string,
   onRowClick: PropTypes.func,
-  onCreate: PropTypes.func,
 };
