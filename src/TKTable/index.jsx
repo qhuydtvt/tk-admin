@@ -129,6 +129,7 @@ const TKTable = (props) => {
                       page,
                       key,
                       value,
+                      item,
                       change: ((newValue, field) => onCellDataChange(page,
                         row,
                         field || dataField(header),
@@ -138,6 +139,7 @@ const TKTable = (props) => {
                       page,
                       key,
                       value,
+                      item,
                     };
                   return createRenderDataCell(header)(cellProps);
                 })

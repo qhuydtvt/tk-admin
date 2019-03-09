@@ -43,7 +43,9 @@ const Toolbar = (props) => {
     filters,
     filterConfigs,
     searchEnabled,
+    createEnabled,
     loadingEnabled,
+    onCreate,
     ...restProps
   } = props;
   return (
@@ -55,6 +57,8 @@ const Toolbar = (props) => {
           onFilterChange={onFilterChange}
           filters={filters}
           filterConfigs={filterConfigs}
+          createEnabled={createEnabled}
+          onCreate={onCreate}
           {...restProps}
         />
         {
@@ -77,19 +81,23 @@ const Toolbar = (props) => {
 Toolbar.defaultProps = {
   loadingEnabled: true,
   onSearch: null,
+  onCreate: null,
   onFilterChange: null,
   filters: {},
   filterConfigs: [],
   searchEnabled: true,
+  createEnabled: true,
 };
 
 Toolbar.propTypes = {
   loadingEnabled: PropTypes.bool,
   isLoading: PropTypes.bool.isRequired,
   searchEnabled: PropTypes.bool,
+  createEnabled: PropTypes.bool,
   onSearch: PropTypes.func,
   onFilterChange: PropTypes.func,
   filters: PropTypes.shape({}),
+  onCreate: PropTypes.func,
   filterConfigs: PropTypes.shape([{
     filterField: PropTypes.string.isRequired,
     title: PropTypes.string,
