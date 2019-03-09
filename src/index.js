@@ -7,4 +7,5 @@ export { default as TKDropdown } from './TKDropdown';
 export { default as TKDataDropdown } from './TKDataDropdown';
 export { default as TKTableToolbar } from './TKTableToolbar';
 export { default as TKDrawerAvatar } from './TKDrawerAvatar';
+export { default as TKAsyncSelect } from './TKAsyncSelect';
 export { default as storeState } from './storeState';

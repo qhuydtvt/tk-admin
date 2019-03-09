@@ -130,6 +130,19 @@ const panels = [
 />
 ```
 
+### TK ASYNC SELECT
+```
+  <TKAsyncSelect
+    fetchOptions={query => axios.get(`http://jsonplaceholder.typicode.com/users?q=${query}`)}
+    onChange={item => console.log(item)}
+    label="Lable"
+    placeholder="Search something..."
+    value={this.state.value}
+    displayText="name"
+    displayValue="id"
+  />
+```
+
 ### StoreState Locally
 changeState is a function to change state in store;
 
