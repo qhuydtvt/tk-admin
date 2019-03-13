@@ -90,7 +90,8 @@ export default class TKDataTable extends Component {
     const { page, data } = this.state;
     if (page === pageToChange) {
       const dataRow = data[row];
-      const newDataRow = { ...dataRow, [field]: newValue };
+      const newDataRow = _.cloneDeep(dataRow);
+      _.set(newDataRow, field, newValue);
       const newData = data.map((item, i) => (i === row ? newDataRow : item));
       this.setState({
         data: newData,
