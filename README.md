@@ -134,7 +134,6 @@ const panels = [
 
 ### TK ASYNC SELECT
 ```
-
   <TKAsyncSelect
     fetchOptions={query => axios.get(`http://jsonplaceholder.typicode.com/users?q=${query}`)}
     onChange={item => console.log(item)}
@@ -145,6 +144,46 @@ const panels = [
     displayValue="id"
   />
 
+```
+
+### TK SELECT
+displayText / displayValue = String or Func to display field in List
+if displayText / displayValue = null, default Value of Text = title, Value = value
+
+```
+  const listOptions = [
+    {
+      id: 1,
+      firstName: 'abc',
+      lastName: 'xyz',
+      age: 32
+    },
+    {
+      id: 2,
+      firstName: 'ccc',
+      lastName: 'bbb',
+      age: 24
+    },
+    {
+      id: 3,
+      firstName: 'ddd',
+      lastName: 'mmm',
+      age: 56
+    },
+  ]
+
+  const fullName = record => `${record.firstName} + ${record.lastName}`
+
+  <TKSelect
+    options={listOptions}
+    onChange={(item) => this.changeTest(item)}
+    placeholder="Test PlaceHolder TK SELECT"
+    value={this.state.value}
+    label="Label"
+    displayText="name"
+    <!-- displayText={fullName} -->
+    displayValue="id"
+  />
 ```
 
 ### StoreState Locally

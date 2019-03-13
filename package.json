@@ -1,11 +1,7 @@
 {
   "name": "tk-admin",
-<<<<<<< HEAD
-  "version": "1.7.4",
-=======
-  "version": "1.7.3",
->>>>>>> 35fbb216022ec1aa58e3fe8dddc5d0ded66c04a2
-  "description": "",
+  "version": "1.7.5",
+  "description": "tk-admin",
   "main": "build/index.js",
   "repository": {
     "type": "git",
