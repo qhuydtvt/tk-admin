@@ -132,6 +132,9 @@ class ResponsiveDrawer extends React.Component {
     const themeCustomize = createMuiTheme({
       overrides: {
         MuiDrawer: {
+          paperAnchorDockedLeft: {
+            borderRight: 0,
+          },
           paper: {
             backgroundRepeat: 'no-repeat',
             backgroundSize: 'cover',

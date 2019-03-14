@@ -86,50 +86,115 @@ const deleteOne = createDeleteOne('https://tk-cm-dummy.herokuapp.com/api/v1/cust
 ```
 
 ### TKDrawer and TKAppbar
-
+```
 const panels = [
   {
     icon: <Dashboard />,
     title: 'Dashboard',
-    view: () => (<AppBoard />),
-    link: '/dashboard',
+    view: () => <div>ABCXYZ VCL</div>,
+    link: '/',
+  },
+  {
+    icon: <Build />,
+    title: 'Exercise',
+    view: () => <span>Content Here</span>,
+    link: '/abc',
     noPaper: true,
-  },
-  <!-- Child need declare before parent -->
-  {
-    icon: <UserDetail />,
-    title: 'UserDetail,
-    view: () => (<UserDetail />),
-    link: '/users/:id, 
-    isChild,
-  },
-  {
-    icon: <Users />,
-    title: 'Users',
-    view: () => (<Users />),
-    link: '/users',
   },
 ];
 
+const menuItems = [
+  {
+    title: 'Logout',
+    icon: <PowerSettingsNew />,
+    onClick: () => {},
+  },
+  {
+    title: 'Logout',
+    icon: <PowerSettingsNew />,
+    onClick: () => {},
+  },
+];
+
+const styleAppbar = {
+  // colorAppbar: 'default',
+  colorTitle: '#000',
+};
+
+const styleDrawer = {
+  color: {
+    color: 'white',
+  },
+  hover: {
+    // backgroundColor: 'rgba(220, 20, 60, 0.5)',
+  },
+  actived: {
+    // backgroundColor: 'rgba(220, 20, 60, 0.9)',
+  },
+  backgroundDrawer: "https://demos.creative-tim.com/material-dashboard-react/static/media/sidebar-4.fc9cb053.jpg",
+  // backgroundColor: 'rgba(220, 20, 60, 0.8)'
+}
+
+const Main = (props) => {
+  return (
+    <div className="App">
+      <TKDrawer
+        panels={panels}
+        // basename="/"
+        // Optional
+        style={styleDrawer}
+        renderUpSidebar={
+          props => (
+            <div style={{ margin:'auto', width: '100%', color: 'white'}}>
+              <p style={{ textAlign: 'center', fontSize: '20px'}}>TK Drawers</p>
+            </div>
+          )
+        }
+        renderAppbar={appBarProps => (
+          <TKAppbar
+            style={styleAppbar}
+            title="Teach"
+            menuItems={menuItems}
+            {...appBarProps}
+          />
+        )}
+      />
+    </div>
+  );
+};
 ```
-<TKDrawer
-  style={styles}
-  panels={panels}
-  basename="/homepage"
-  renderAppbar={() => (
-    <TKAppbar
-      title="Teach"
-      menuItems={[
-        {
-          title: 'Logout',
-          icon: <PowerSettingsNew />,
-          onClick: () => console.log('Logout'),
-        },
-      ]}
-      {...props}
-    />
-  )}
-/>
+
+### TK DROPDOWN
+```
+  const listOptions = [
+    {
+      id: 1,
+      firstName: 'abc',
+      lastName: 'xyz',
+      age: 32
+    },
+    {
+      id: 2,
+      firstName: 'ccc',
+      lastName: 'bbb',
+      age: 24
+    },
+    {
+      id: 3,
+      firstName: 'ddd',
+      lastName: 'mmm',
+      age: 56
+    },
+  ]
+
+  <TKDropdown
+    menuItems={listOptions}
+    title="Title"
+    emptyItemTitle="Choose..."
+    displayText="name"
+    displayValue="id"
+  />
+
 ```
 
 ### TK ASYNC SELECT
