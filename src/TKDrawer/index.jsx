@@ -160,6 +160,9 @@ class ResponsiveDrawer extends React.Component {
         primary: {
           main: '#fff',
         },
+        secondary: {
+          main: '#000',
+        },
       },
     });
 
