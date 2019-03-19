@@ -126,6 +126,8 @@ class ResponsiveDrawer extends React.Component {
       actived,
       backgroundDrawer,
       backgroundColor,
+      mainColorPalette,
+      secondaryColorPalette,
     } = style;
 
     // Change Mui Theme Default
@@ -158,10 +160,10 @@ class ResponsiveDrawer extends React.Component {
       },
       palette: {
         primary: {
-          main: '#fff',
+          main: mainColorPalette || '#fff',
         },
         secondary: {
-          main: '#000',
+          main: secondaryColorPalette || '#000',
         },
       },
     });
