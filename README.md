@@ -131,6 +131,8 @@ const styleDrawer = {
   actived: {
     // backgroundColor: 'rgba(220, 20, 60, 0.9)',
   },
+  mainColorPalette: '#fff',
+  secondaryColorPalette: '#000',
   backgroundDrawer: "https://demos.creative-tim.com/material-dashboard-react/static/media/sidebar-4.fc9cb053.jpg",
   // backgroundColor: 'rgba(220, 20, 60, 0.8)'
 }
