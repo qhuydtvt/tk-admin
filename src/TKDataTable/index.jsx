@@ -65,7 +65,8 @@ export default class TKDataTable extends Component {
   }
 
   handleFilterChange(name, value) {
-    this.setState({ filters: { [name]: value } }, this.fetch);
+    const { filters: oldFilters } = this.state
+    this.setState({ filters: { ...oldFilters, [name]: value } }, this.fetch);
   }
 
   handleRowSelectionChange(changingPage, itemIndex, selected) {
