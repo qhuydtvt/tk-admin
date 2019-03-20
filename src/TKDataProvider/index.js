@@ -3,7 +3,15 @@ import _ from 'lodash';
 
 axios.defaults.withCredentials = true;
 
-const createProvidePage = resourceUrl => (async (
+const createHeaders = (token, tokenField='x-auth-token') => {
+  let headers = {};
+  if (!!token) {
+    headers[tokenField] = token;
+  }
+  return headers;
+}
+
+const createProvidePage = (resourceUrl, dataField='', token='') => (async (
   page,
   rowPerPage,
   sort,
@@ -12,6 +20,7 @@ const createProvidePage = resourceUrl => (async (
   filters = {}) => {
   const start = page * rowPerPage;
   const end = start + rowPerPage - 1;
+  const headers = createHeaders(token);
   const response = await axios.get(resourceUrl, {
     params: {
       _start: start,
@@ -21,22 +30,25 @@ const createProvidePage = resourceUrl => (async (
       q: search,
       ...filters,
     },
+    headers,
   });
   return {
-    data: response.data,
+    data: !!dataField ? _.get(response.data, dataField) : response.data,
     count: parseInt(response.headers['x-total-count'], 10),
   };
 });
 
-export const createDeleteOne = (resourceUrl, idField = '_id') => async (item) => {
+export const createDeleteOne = (resourceUrl, idField = '_id', token='') => async (item) => {
   const _id = _.get(item, idField);
-  const response = await axios.delete(`${resourceUrl}/${_id}`);
+  const headers = createHeaders(token);
+  const response = await axios.delete(`${resourceUrl}/${_id}`, { headers });
   return !!response.data;
 };
 
-export const createProvideInputOptions = (resourceUrl, titleField, valueField, dataField = '') => (
+export const createProvideInputOptions = (resourceUrl, titleField, valueField, dataField = '', token='') => (
   async () => {
-    const response = await axios.get(resourceUrl);
+    const headers = createHeaders(token);
+    const response = await axios.get(resourceUrl, { headers });
     let items = null;
     if (dataField) {
       items = _.get(response.data, dataField);

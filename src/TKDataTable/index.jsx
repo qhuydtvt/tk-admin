@@ -187,7 +187,7 @@ export default class TKDataTable extends Component {
       filters,
       deleteStatus,
     } = this.state;
-    const deletable = data.reduce(
+    const deletable = data && data.reduce(
       (accumulator, currentItem) => accumulator || currentItem.selected,
       false,
     );
