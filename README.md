@@ -93,7 +93,12 @@ const panels = [
     title: 'Dashboard',
     view: () => <div>ABCXYZ VCL</div>,
     link: '/',
+    subMenu: 'Resources',
+    noMenu: true,
   },
+  // noPaper: bool - no Paper
+  // noMenu: bool - it will be not shown in Drawer
+  // subMenu: string - if panel has subMenu prop, Drawer will render by SubMenu List
   {
     icon: <Build />,
     title: 'Exercise',
@@ -122,6 +127,11 @@ const styleAppbar = {
 };
 
 const styleDrawer = {
+  submenu: {
+    fontWeight: 'bold',
+    fontSize: 20,
+    color: '#fff',
+  },
   color: {
     color: 'white',
   },
