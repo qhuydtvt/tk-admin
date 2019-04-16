@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import _ from 'lodash';
 
 import TKTableToolbar from '../TKTableToolbar';
 import TKTable from '../TKTable';
@@ -65,7 +66,7 @@ export default class TKDataTable extends Component {
   }
 
   handleFilterChange(name, value) {
-    const { filters: oldFilters } = this.state
+    const { filters: oldFilters } = this.state;
     this.setState({ filters: { ...oldFilters, [name]: value } }, this.fetch);
   }
 

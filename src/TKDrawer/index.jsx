@@ -10,12 +10,13 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import Drawer from '@material-ui/core/Drawer';
 import Hidden from '@material-ui/core/Hidden';
 import List from '@material-ui/core/List';
+import ListSubheader from '@material-ui/core/ListSubheader';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import { FormatListBulleted } from '@material-ui/icons';
+import { FormatListBulleted, KeyboardArrowRight } from '@material-ui/icons';
 import { MuiThemeProvider, withStyles, createMuiTheme } from '@material-ui/core/styles';
 import {
   BrowserRouter as Router, Route, Link, Switch,
@@ -31,7 +32,7 @@ const defaultStyle = {
   actived: { backgroundColor: 'rgba(92, 92, 92, 0.8)' },
   backgroundColor: 'rgba(0, 0, 0, 0.8)',
   color: {
-    color: 'white',
+    color: '#fff',
   },
 };
 
@@ -125,9 +126,11 @@ class ResponsiveDrawer extends React.Component {
       hover,
       actived,
       backgroundDrawer,
+      submenu,
       backgroundColor,
       mainColorPalette,
       secondaryColorPalette,
+      iconRightButton,
     } = style;
 
     // Change Mui Theme Default
@@ -167,29 +170,71 @@ class ResponsiveDrawer extends React.Component {
         },
       },
     });
-
+    const subMenus = _.uniq(panels.map(panel => panel.subMenu && panel.subMenu).filter(panel => panel));
     const drawer = (
       <div>
         <div className={classNames(classes.toolbar, classes.flexToolbar)}>
           {renderUpSidebar != null && renderUpSidebar({ classes })}
         </div>
         <DividerCustom />
-        <List style={{ padding: '24px 0' }}>
-          {panels.filter(panel => (!panel.noMenu && !!panel.title)).map(panel => (
-            <NavLink
-              exact
-              to={panel.link}
-              key={panel.title}
-              style={{ textDecoration: 'none' }}
-              activeClassName={classes.selectedPanel}
-            >
-              <ListItem button className={classes.panelItem}>
-                <ListItemIcon style={!_.isEmpty(color) ? color : defaultStyle.text}>{panel.icon || <FormatListBulleted /> }</ListItemIcon>
-                <ListItemText primary={<Typography variant="subtitle2" style={!_.isEmpty(color) ? color : defaultStyle.text}>{panel.title}</Typography>} />
-              </ListItem>
-            </NavLink>
-          ))}
-        </List>
+        {
+          _.isEmpty(subMenus)
+            ? (
+              <List
+                style={{ padding: '24px 0' }}
+              >
+                {panels.filter(panel => (!panel.noMenu && !!panel.title)).map(panel => (
+                  <NavLink
+                    exact
+                    to={panel.link}
+                    key={panel.title}
+                    style={{ textDecoration: 'none' }}
+                    activeClassName={classes.selectedPanel}
+                  >
+                    <ListItem button className={classes.panelItem}>
+                      <ListItemIcon style={!_.isEmpty(color) ? color : defaultStyle.text}>{panel.icon || <FormatListBulleted /> }</ListItemIcon>
+                      <ListItemText primary={<Typography variant="subtitle2" style={!_.isEmpty(color) ? color : defaultStyle.text}>{panel.title}</Typography>} />
+                      {iconRightButton || ''}
+                    </ListItem>
+                  </NavLink>
+                ))}
+              </List>
+            )
+            : (
+              subMenus.map(menu => (
+                <List
+                  key={menu}
+                  style={{ padding: '24px 0' }}
+                  subheader={(
+                    <ListSubheader
+                      style={_.isEmpty(submenu) ? {
+                        color: 'fff',
+                      } : submenu}
+                      component="div"
+                    >
+                      {menu}
+                    </ListSubheader>
+                  )}
+                >
+                  {panels.filter(panel => (panel.subMenu === menu && !panel.noMenu && !!panel.title)).map(panel => (
+                    <NavLink
+                      exact
+                      to={panel.link}
+                      key={panel.title}
+                      style={{ textDecoration: 'none' }}
+                      activeClassName={classes.selectedPanel}
+                    >
+                      <ListItem button className={classes.panelItem}>
+                        <ListItemIcon style={!_.isEmpty(color) ? color : defaultStyle.text}>{panel.icon || <FormatListBulleted /> }</ListItemIcon>
+                        <ListItemText primary={<Typography variant="subtitle2" style={!_.isEmpty(color) ? color : defaultStyle.text}>{panel.title}</Typography>} />
+                        {iconRightButton || ''}
+                      </ListItem>
+                    </NavLink>
+                  ))}
+                </List>
+              ))
+            )
+        }
       </div>
     );
 
@@ -276,6 +321,7 @@ ResponsiveDrawer.defaultProps = {
   renderAppbar: null,
   renderUpSidebar: null,
   basename: '',
+  iconRightButton: {},
 };
 
 ResponsiveDrawer.propTypes = {
@@ -287,6 +333,7 @@ ResponsiveDrawer.propTypes = {
   style: PropTypes.shape({}),
   theme: PropTypes.shape({}),
   basename: PropTypes.string,
+  iconRightButton: PropTypes.shape({}),
 };
 
 export default withStyles(styles, { withTheme: true })(ResponsiveDrawer);
